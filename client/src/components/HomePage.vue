@@ -44,6 +44,9 @@ export default {
 
   mounted() {
     this.getItems();
+    if ("linked" in this.$route.query) {
+      this.addItem(this.$route.query.linked);
+    }
   },
 
   methods: {
@@ -52,10 +55,14 @@ export default {
       localStorage.removeItem(key);
     },
 
+    addItem(content) {
+      let key = Date.now().toString();
+      this.items.unshift([key, content]);
+      localStorage.setItem(key, content);
+    },
+
     submitNote() {
-      let key = Object.entries(localStorage).length + 1;
-      this.items.unshift([key, this.noteBody]);
-      localStorage.setItem(key, this.noteBody);
+      this.addItem(this.noteBody);
       this.noteBody = "";
     },
 

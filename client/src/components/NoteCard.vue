@@ -23,13 +23,19 @@
 export default {
   props: ["content"],
   methods: {
-    generateLink() {
-      alert("hi");
+    async generateLink() {
+      let queryParam = `linked=${this.content[1]}`;
+      let url = `${location.protocol}//${location.host}${location.pathname}?${queryParam}`;
+      await navigator.clipboard.writeText(url);
+      this.notify("Link copied to clipboard.");
     },
     async copyToClipboard() {
       await navigator.clipboard.writeText(this.content[1]);
+      this.notify("Note copied to clipboard.");
+    },
+    notify(message) {
       this.$notify({
-        message: "Note copied to clipboard",
+        message,
         type: "",
         top: true,
         bottom: false,
