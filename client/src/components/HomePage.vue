@@ -1,11 +1,24 @@
 <template>
-  <div class="simple-page">
+  <div id="home-page">
     <div class="content">
+      <div class="title">
+        Quickjot.
+      </div>
       <div class="controls">
-        <input type="text" v-model="noteBody" @keyup.enter="submitNote()" />
-        <div @click="clear()">
-          clear
-        </div>
+        <textarea
+          type="text"
+          class="note-input"
+          v-model="noteBody"
+          placeholder="Enter a note..."
+          @keyup.enter="submitNote()"
+        />
+        <font-awesome-icon
+          class="clear-all"
+          @click="clear()"
+          size="2x"
+          icon="eraser"
+          color="#b1b4ba"
+        />
       </div>
       <container
         :get-ghost-parent="getGhostParent"
@@ -111,8 +124,18 @@ export default {
 </script>
 
 <style scoped>
-.controls {
-  margin-bottom: 20px;
+.note-input {
+  height: 45px;
+  border: 2px solid #b1b4ba;
+  border-radius: 5px;
+  padding-left: 15px;
+  padding-top: 5px;
+  width: 70%;
+}
+
+.note-input:focus {
+  border: 2px solid rgb(155, 150, 150);
+  outline: none;
 }
 
 .dndrop-draggable-wrapper {
@@ -120,10 +143,32 @@ export default {
   margin-right: auto;
 }
 
+.clear-all {
+  margin-left: auto;
+  padding-right: 15px;
+}
+
+.clear-all:hover {
+  cursor: pointer;
+}
+
+.title {
+  display: flex;
+  font-size: 40px;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.controls {
+  margin-bottom: 40px;
+  display: flex;
+}
+
 .content {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  width: 35em;
+  padding-right: 70px;
+  width: 40em;
 }
 </style>

@@ -6,7 +6,7 @@
 
 <style>
 html * {
-  font-size: 1em !important;
-  font-family: Arial !important;
+  font-size: 1rem;
+  font-family: monospace;
 }
 </style>

@@ -2,11 +2,11 @@
   <div id="note-card">
     <div class="card-container">
       <div class="card-buttons">
-        <div class="card-button" @click="generateLink()">
-          <font-awesome-icon icon="link" color="#b1b4ba" />
-        </div>
         <div class="card-button" @click="copyToClipboard()">
           <font-awesome-icon icon="copy" color="#b1b4ba" />
+        </div>
+        <div class="card-button" @click="generateLink()">
+          <font-awesome-icon icon="link" color="#b1b4ba" />
         </div>
         <div class="card-button" @click="$emit('deleteItem', content[0])">
           <font-awesome-icon icon="trash-can" color="#b1b4ba" />
@@ -52,8 +52,11 @@ export default {
 <style>
 .card-buttons {
   padding-right: 10px;
+  padding-bottom: 5px;
   display: flex;
   justify-content: flex-end;
+  border-bottom: 1px solid;
+  border-image: linear-gradient(to right, transparent 85%, #b1b4ba 17%) 100% 2;
 }
 
 .card-button {
@@ -65,14 +68,22 @@ export default {
 }
 
 .card-content {
+  margin-top: 5px;
   word-wrap: break-word;
   text-align: center;
 }
 
 .card-container {
-  padding: 15px;
+  border-radius: 25px 25px 25px 2px;
+  min-height: 100px;
+  padding: 16px;
   border: 2px solid #b1b4ba;
   margin-bottom: 40px;
   cursor: pointer;
+}
+
+.card-container:hover {
+  border: 3px solid #b1b4ba;
+  padding: 15px;
 }
 </style>
