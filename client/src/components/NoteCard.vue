@@ -35,14 +35,14 @@ export default {
 
   methods: {
     async generateLink() {
-      let queryParam = `linked=${this.content[1]}`;
+      let queryParam = `linknote=${this.content[1]}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParam}`;
       await navigator.clipboard.writeText(url);
-      this.notify("Link copied to clipboard.");
+      this.notify("Shareable note link copied to clipboard.");
     },
     async copyToClipboard() {
       await navigator.clipboard.writeText(this.content[1]);
-      this.notify("Note copied to clipboard.");
+      this.notify("Note content copied to clipboard.");
     },
     notify(message) {
       this.$notify({
@@ -50,10 +50,10 @@ export default {
         type: "",
         top: true,
         bottom: false,
-        left: true,
+        left: false,
         right: false,
         showClose: false,
-        closeDelay: 1500
+        closeDelay: 3000
       });
     }
   }
@@ -67,7 +67,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   border-bottom: 1px solid;
-  border-image: linear-gradient(to right, transparent 79%, #d0d4da 17%) 100% 2;
+  border-image: linear-gradient(to right, transparent 83%, #d0d4da 17%) 100% 2;
 }
 
 .starter {
@@ -90,14 +90,14 @@ export default {
 .card-content {
   display: flex;
   margin-top: 5px;
-  font-size: 18px;
+  font-size: 17px;
   word-break: break-all;
   text-align: left;
   overflow: hidden;
 }
 
 .newly-added {
-  background-color: #dbf9c6;
+  background-color: #bec2bb;
 }
 
 .card-container {
@@ -107,10 +107,5 @@ export default {
   border: 2px solid #b1b4ba;
   transition: background-color 4000ms ease-out;
   margin-bottom: 40px;
-}
-
-.card-container:hover {
-  border: 3px solid #b1b4ba;
-  padding: 15px;
 }
 </style>

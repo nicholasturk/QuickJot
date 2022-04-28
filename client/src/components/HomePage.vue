@@ -13,7 +13,7 @@
             class="note-input"
             v-model="inputBody"
             :placeholder="inputText"
-            @keyup.enter="submitNote()"
+            @keyup.right="submitNote()"
           />
         </div>
         <div class="search-button">
@@ -60,7 +60,7 @@
         :key="(item.id, idx)"
         :id="item[0]"
         :content="item"
-        :newlyAdded="linked && idx === 0"
+        :newlyAdded="linknote && idx === 0"
         @deleteItem="deleteItem"
       ></note-card>
     </div>
@@ -81,16 +81,17 @@ export default {
       items: [],
       shouldShake: false,
       isSearching: false,
-      linked: false,
+      linknote: false,
+      linknotes: false,
       reversed: false
     };
   },
 
   mounted() {
     this.getItems();
-    if ("linked" in this.$route.query) {
-      this.linked = true;
-      this.addItem(this.$route.query.linked);
+    if ("linknote" in this.$route.query) {
+      this.linknote = true;
+      this.addItem(this.$route.query.linknote);
       this.$router.push(this.$route.path);
     }
   },
@@ -134,11 +135,28 @@ export default {
       localStorage.setItem(key, content);
     },
 
+    exportCollection() {
+      this.notify("Shareable collection link copied to clipboard.");
+    },
+
+    notify(message) {
+      this.$notify({
+        message,
+        type: "",
+        top: true,
+        bottom: false,
+        left: false,
+        right: false,
+        showClose: false,
+        closeDelay: 3000
+      });
+    },
+
     submitNote() {
       if (this.isSearching) {
         return;
       }
-      this.linked = false;
+      this.linknote = false;
       this.addItem(this.inputBody);
       this.inputBody = "";
     },
@@ -228,6 +246,7 @@ export default {
   font-size: 30px;
   margin-top: 40px;
   margin-bottom: 30px;
+  padding-left: 15px;
 }
 
 #search-button {
