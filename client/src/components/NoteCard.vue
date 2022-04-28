@@ -103,7 +103,7 @@ export default {
 }
 
 .card-container {
-  border-radius: 22px 22px 22px 2px;
+  border-radius: 22px 22px 22px 4px;
   min-height: 100px;
   padding: 16px;
   border: 2px solid #b1b4ba;

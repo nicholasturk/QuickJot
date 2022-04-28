@@ -198,8 +198,10 @@ export default {
   border: 2px solid #b1b4ba;
   padding-left: 15px;
   padding-top: 10px;
+  padding-right: 10px;
   border-radius: 15px 15px 2px 15px;
   width: 93%;
+  max-width: 93%;
 }
 
 .input-section {
