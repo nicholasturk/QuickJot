@@ -2,7 +2,7 @@
   <div id="home-page">
     <div class="content">
       <div class="title">
-        Quickjot.
+        quicknote.
       </div>
       <div class="controls">
         <div class="input-section">
@@ -118,7 +118,7 @@ export default {
       if (this.isSearching) {
         return "Search for a note...";
       } else {
-        return "Add a note...";
+        return "Add a note (right arrow key)...";
       }
     }
   },

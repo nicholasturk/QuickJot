@@ -13,7 +13,8 @@
         </div>
       </div>
       <div class="card-content">
-        <span class="starter">></span> {{ content[1] }}
+        <span class="starter">></span>
+        <div>{{ content[1] }}</div>
       </div>
     </div>
   </div>
@@ -94,6 +95,7 @@ export default {
   word-break: break-all;
   text-align: left;
   overflow: hidden;
+  white-space: pre-wrap;
 }
 
 .newly-added {
@@ -107,5 +109,7 @@ export default {
   border: 2px solid #b1b4ba;
   transition: background-color 4000ms ease-out;
   margin-bottom: 40px;
+  box-shadow: 0 19px 50px rgba(230, 223, 223, 0.3),
+    0 12px 12px rgba(133, 129, 129, 0.3);
 }
 </style>
