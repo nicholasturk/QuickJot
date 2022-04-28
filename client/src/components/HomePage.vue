@@ -5,16 +5,18 @@
         Quickjot.
       </div>
       <div class="controls">
-        <textarea
-          :style="{ resize: this.isSearching ? 'none' : '' }"
-          type="text"
-          id="note-input"
-          class="note-input"
-          v-model="noteBody"
-          :placeholder="inputText"
-          @keyup.enter="submitNote()"
-        />
-        <div class="topButtons">
+        <div class="input-section">
+          <textarea
+            :style="{ resize: this.isSearching ? 'none' : '' }"
+            type="text"
+            id="note-input"
+            class="note-input"
+            v-model="inputBody"
+            :placeholder="inputText"
+            @keyup.enter="submitNote()"
+          />
+        </div>
+        <div class="search-button">
           <font-awesome-icon
             class="topButton"
             id="search-button"
@@ -22,6 +24,24 @@
             size="2x"
             icon="magnifying-glass"
             rotation="90"
+            color="#b1b4ba"
+          />
+        </div>
+        <div class="topButtons">
+          <font-awesome-icon
+            class="topButton"
+            @click="() => (this.reversed = !this.reversed)"
+            size="2x"
+            id="sort-button"
+            icon="sort"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            class="topButton"
+            size="2x"
+            icon="file-export"
+            @click="exportCollection()"
+            id="export-button"
             color="#b1b4ba"
           />
           <font-awesome-icon
@@ -34,46 +54,35 @@
           />
         </div>
       </div>
-      <container
-        :get-ghost-parent="getGhostParent"
-        :get-child-payload="getChildPayload"
-        @drop="onDrop"
-        @drop-ready="onDropReady"
-        @drop-not-allowed="dropNotAllowed"
-      >
-        <draggable
-          v-for="(item, idx) in items"
-          :drag-class="'dragging'"
-          :key="(item.id, idx)"
-        >
-          <note-card
-            :id="item[0]"
-            :content="item"
-            :newlyAdded="linked && idx === 0"
-            @deleteItem="deleteItem"
-          ></note-card>
-        </draggable>
-      </container>
+
+      <note-card
+        v-for="(item, idx) in itemsFiltered"
+        :key="(item.id, idx)"
+        :id="item[0]"
+        :content="item"
+        :newlyAdded="linked && idx === 0"
+        @deleteItem="deleteItem"
+      ></note-card>
     </div>
   </div>
 </template>
 
 <script>
 import NoteCard from "./NoteCard";
-import { Container, Draggable } from "vue-dndrop";
 
 export default {
   name: "HomePage",
 
-  components: { Container, Draggable, NoteCard },
+  components: { NoteCard },
 
   data() {
     return {
-      noteBody: "",
-      items: Array,
+      inputBody: "",
+      items: [],
       shouldShake: false,
       isSearching: false,
-      linked: false
+      linked: false,
+      reversed: false
     };
   },
 
@@ -87,6 +96,23 @@ export default {
   },
 
   computed: {
+    searchBody() {
+      if (this.isSearching) {
+        return this.inputBody;
+      } else {
+        return "";
+      }
+    },
+
+    itemsFiltered() {
+      let ret = this.items.filter(e => e[1].match(this.searchBody));
+      if (this.reversed) {
+        return ret.reverse();
+      } else {
+        return ret;
+      }
+    },
+
     inputText() {
       if (this.isSearching) {
         return "Search for a note...";
@@ -109,9 +135,12 @@ export default {
     },
 
     submitNote() {
+      if (this.isSearching) {
+        return;
+      }
       this.linked = false;
-      this.addItem(this.noteBody);
-      this.noteBody = "";
+      this.addItem(this.inputBody);
+      this.inputBody = "";
     },
 
     search() {
@@ -133,24 +162,6 @@ export default {
         .filter(i => i[0] != "randid");
     },
 
-    applyDrag(dragResult) {
-      const { removedIndex, addedIndex, payload } = dragResult;
-      if (removedIndex === null && addedIndex === null) return this.items;
-
-      const result = [...this.items];
-      let itemToAdd = payload;
-
-      if (removedIndex !== null) {
-        itemToAdd = result.splice(removedIndex, 1)[0];
-      }
-
-      if (addedIndex !== null) {
-        result.splice(addedIndex, 0, itemToAdd);
-      }
-
-      this.items = [...result];
-    },
-
     clear() {
       this.shouldShake = true;
       this.items.forEach(e => localStorage.removeItem(e[0]));
@@ -158,18 +169,6 @@ export default {
       setTimeout(() => {
         this.shouldShake = false;
       }, 1000);
-    },
-
-    onDrop(dropResult) {
-      this.applyDrag(dropResult);
-    },
-    getGhostParent() {
-      return document.body;
-    },
-    onDropReady(dropResult) {},
-    dropNotAllowed({ payload, container }) {},
-    getChildPayload(index) {
-      return this.items[index];
     }
   }
 };
@@ -181,12 +180,17 @@ export default {
   border: 2px solid #b1b4ba;
   padding-left: 15px;
   padding-top: 10px;
-  width: 80%;
   border-radius: 15px 15px 2px 15px;
+  width: 93%;
+}
+
+.input-section {
+  width: 70%;
 }
 
 .rotate-left {
   transform: rotate(360deg);
+  transform: scale(1.2);
   transition-duration: 500ms;
 }
 
@@ -196,7 +200,7 @@ export default {
 }
 
 .note-input:focus {
-  border: 2px solid rgb(155, 150, 150);
+  border: 2px solid rgb(146, 137, 137);
   outline: none;
 }
 
@@ -207,27 +211,44 @@ export default {
 
 .topButton {
   font-size: 25px;
-  margin-right: 7px;
-}
-
-.topButton:hover {
-  cursor: pointer;
+  margin-right: 10px;
+  margin-top: 14px;
 }
 
 .topButtons {
   margin-left: auto;
 }
 
+.topButton:hover {
+  cursor: pointer;
+}
+
 .title {
   display: flex;
-  font-size: 40px;
+  font-size: 30px;
   margin-top: 40px;
   margin-bottom: 30px;
+}
+
+#search-button {
+  margin-left: 5px;
+  margin-top: 14px;
+  font-size: 27px;
 }
 
 .controls {
   margin-bottom: 40px;
   display: flex;
+}
+
+.topButtons .topButton:hover {
+  transform: scale(1.1);
+}
+
+#export-button {
+  font-size: 22px;
+  margin-left: 5px;
+  margin-bottom: 1px;
 }
 
 .content {

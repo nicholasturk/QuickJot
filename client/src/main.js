@@ -9,13 +9,17 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { faBomb } from "@fortawesome/free-solid-svg-icons";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faFileExport } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import routes from "./routes";
 
 library.add(faUserSecret);
+library.add(faFileExport);
 library.add(faMagnifyingGlass);
 library.add(faBomb);
+library.add(faSort);
 library.add(faCopy);
 library.add(faTrashCan);
 library.add(faLink);

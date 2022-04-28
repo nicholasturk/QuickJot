@@ -71,13 +71,15 @@ export default {
 }
 
 .starter {
+  user-select: none;
   color: #b1b4ba;
   margin-right: 5px;
   font-size: 20px;
 }
 
 .card-button {
-  font-size: 20px;
+  cursor: pointer;
+  font-size: 16px;
   margin-left: 8px;
 }
 
@@ -88,7 +90,7 @@ export default {
 .card-content {
   display: flex;
   margin-top: 5px;
-  font-size: 20px;
+  font-size: 18px;
   word-break: break-all;
   text-align: left;
   overflow: hidden;
@@ -105,7 +107,6 @@ export default {
   border: 2px solid #b1b4ba;
   transition: background-color 4000ms ease-out;
   margin-bottom: 40px;
-  cursor: pointer;
 }
 
 .card-container:hover {
