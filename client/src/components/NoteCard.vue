@@ -3,17 +3,17 @@
     <div class="card-container">
       <div class="card-buttons">
         <div class="card-button" @click="copyToClipboard()">
-          <font-awesome-icon icon="copy" color="#b1b4ba" />
+          <font-awesome-icon icon="copy" size="lg" color="#b1b4ba" />
         </div>
         <div class="card-button" @click="generateLink()">
-          <font-awesome-icon icon="link" color="#b1b4ba" />
+          <font-awesome-icon icon="link" size="lg" color="#b1b4ba" />
         </div>
         <div class="card-button" @click="$emit('deleteItem', content[0])">
-          <font-awesome-icon icon="trash-can" color="#b1b4ba" />
+          <font-awesome-icon icon="trash-can" size="lg" color="#b1b4ba" />
         </div>
       </div>
       <div class="card-content">
-        {{ content[1] }}
+        <span class="starter">></span> {{ content[1] }}
       </div>
     </div>
   </div>
@@ -21,7 +21,18 @@
 
 <script>
 export default {
-  props: ["content"],
+  props: ["content", "newlyAdded"],
+
+  mounted() {
+    let orig = document.getElementsByClassName("card-container")[0];
+    if (this.newlyAdded) {
+      orig.classList.add("newly-added");
+      setTimeout(() => {
+        orig.classList.remove("newly-added");
+      }, 0);
+    }
+  },
+
   methods: {
     async generateLink() {
       let queryParam = `linked=${this.content[1]}`;
@@ -51,15 +62,22 @@ export default {
 
 <style>
 .card-buttons {
-  padding-right: 10px;
+  padding-right: 9px;
   padding-bottom: 5px;
   display: flex;
   justify-content: flex-end;
   border-bottom: 1px solid;
-  border-image: linear-gradient(to right, transparent 85%, #b1b4ba 17%) 100% 2;
+  border-image: linear-gradient(to right, transparent 79%, #d0d4da 17%) 100% 2;
+}
+
+.starter {
+  color: #b1b4ba;
+  margin-right: 5px;
+  font-size: 20px;
 }
 
 .card-button {
+  font-size: 20px;
   margin-left: 8px;
 }
 
@@ -68,16 +86,24 @@ export default {
 }
 
 .card-content {
+  display: flex;
   margin-top: 5px;
-  word-wrap: break-word;
-  text-align: center;
+  font-size: 20px;
+  word-break: break-all;
+  text-align: left;
+  overflow: hidden;
+}
+
+.newly-added {
+  background-color: #dbf9c6;
 }
 
 .card-container {
-  border-radius: 25px 25px 25px 2px;
+  border-radius: 22px 22px 22px 2px;
   min-height: 100px;
   padding: 16px;
   border: 2px solid #b1b4ba;
+  transition: background-color 4000ms ease-out;
   margin-bottom: 40px;
   cursor: pointer;
 }

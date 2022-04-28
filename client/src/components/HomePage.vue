@@ -6,19 +6,33 @@
       </div>
       <div class="controls">
         <textarea
+          :style="{ resize: this.isSearching ? 'none' : '' }"
           type="text"
+          id="note-input"
           class="note-input"
           v-model="noteBody"
-          placeholder="Enter a note..."
+          :placeholder="inputText"
           @keyup.enter="submitNote()"
         />
-        <font-awesome-icon
-          class="clear-all"
-          @click="clear()"
-          size="2x"
-          icon="eraser"
-          color="#b1b4ba"
-        />
+        <div class="topButtons">
+          <font-awesome-icon
+            class="topButton"
+            id="search-button"
+            @click="search()"
+            size="2x"
+            icon="magnifying-glass"
+            rotation="90"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            class="topButton"
+            @click="clear()"
+            :class="{ 'fa-shake': shouldShake }"
+            size="2x"
+            icon="bomb"
+            color="#b1b4ba"
+          />
+        </div>
       </div>
       <container
         :get-ghost-parent="getGhostParent"
@@ -28,11 +42,16 @@
         @drop-not-allowed="dropNotAllowed"
       >
         <draggable
-          v-for="item in items"
+          v-for="(item, idx) in items"
           :drag-class="'dragging'"
-          :key="item.id"
+          :key="(item.id, idx)"
         >
-          <note-card :content="item" @deleteItem="deleteItem"></note-card>
+          <note-card
+            :id="item[0]"
+            :content="item"
+            :newlyAdded="linked && idx === 0"
+            @deleteItem="deleteItem"
+          ></note-card>
         </draggable>
       </container>
     </div>
@@ -51,14 +70,29 @@ export default {
   data() {
     return {
       noteBody: "",
-      items: Array
+      items: Array,
+      shouldShake: false,
+      isSearching: false,
+      linked: false
     };
   },
 
   mounted() {
     this.getItems();
     if ("linked" in this.$route.query) {
+      this.linked = true;
       this.addItem(this.$route.query.linked);
+      this.$router.push(this.$route.path);
+    }
+  },
+
+  computed: {
+    inputText() {
+      if (this.isSearching) {
+        return "Search for a note...";
+      } else {
+        return "Add a note...";
+      }
     }
   },
 
@@ -75,8 +109,22 @@ export default {
     },
 
     submitNote() {
+      this.linked = false;
       this.addItem(this.noteBody);
       this.noteBody = "";
+    },
+
+    search() {
+      let icon = document.getElementById("search-button");
+      icon.classList.remove("rotate-right");
+      icon.classList.remove("rotate-left");
+      this.isSearching = !this.isSearching;
+      if (this.isSearching) {
+        document.getElementById("note-input").focus();
+        icon.classList.add("rotate-left");
+      } else {
+        icon.classList.add("rotate-right");
+      }
     },
 
     getItems() {
@@ -104,8 +152,12 @@ export default {
     },
 
     clear() {
+      this.shouldShake = true;
       this.items.forEach(e => localStorage.removeItem(e[0]));
       this.getItems();
+      setTimeout(() => {
+        this.shouldShake = false;
+      }, 1000);
     },
 
     onDrop(dropResult) {
@@ -127,10 +179,20 @@ export default {
 .note-input {
   height: 45px;
   border: 2px solid #b1b4ba;
-  border-radius: 5px;
   padding-left: 15px;
-  padding-top: 5px;
-  width: 70%;
+  padding-top: 10px;
+  width: 80%;
+  border-radius: 15px 15px 2px 15px;
+}
+
+.rotate-left {
+  transform: rotate(360deg);
+  transition-duration: 500ms;
+}
+
+.rotate-right {
+  transform: rotate(90deg);
+  transition-duration: 500ms;
 }
 
 .note-input:focus {
@@ -143,13 +205,17 @@ export default {
   margin-right: auto;
 }
 
-.clear-all {
-  margin-left: auto;
-  padding-right: 15px;
+.topButton {
+  font-size: 25px;
+  margin-right: 7px;
 }
 
-.clear-all:hover {
+.topButton:hover {
   cursor: pointer;
+}
+
+.topButtons {
+  margin-left: auto;
 }
 
 .title {
