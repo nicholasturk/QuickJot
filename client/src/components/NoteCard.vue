@@ -1,15 +1,20 @@
 <template>
   <div id="note-card">
     <div class="card-container">
-      <div class="card-buttons">
-        <div class="card-button" @click="copyToClipboard()">
-          <font-awesome-icon icon="copy" size="lg" color="#b1b4ba" />
+      <div class="card-header">
+        <div class="created-date">
+          {{ timeSince(content[0]) }}
         </div>
-        <div class="card-button" @click="generateLink()">
-          <font-awesome-icon icon="link" size="lg" color="#b1b4ba" />
-        </div>
-        <div class="card-button" @click="$emit('deleteItem', content[0])">
-          <font-awesome-icon icon="trash-can" size="lg" color="#b1b4ba" />
+        <div class="card-buttons">
+          <div class="card-button" @click="copyToClipboard()">
+            <font-awesome-icon icon="copy" size="lg" color="#b1b4ba" />
+          </div>
+          <div class="card-button" @click="generateLink()">
+            <font-awesome-icon icon="link" size="lg" color="#b1b4ba" />
+          </div>
+          <div class="card-button" @click="$emit('deleteItem', content[0])">
+            <font-awesome-icon icon="trash-can" size="lg" color="#b1b4ba" />
+          </div>
         </div>
       </div>
       <div class="card-content">
@@ -35,6 +40,37 @@ export default {
   },
 
   methods: {
+    timeSince(date) {
+      var seconds = Math.floor((new Date() - date) / 1000);
+
+      var interval = seconds / 31536000;
+      var ret = "";
+
+      if (interval >= 1) {
+        ret = Math.floor(interval) + " year";
+      }
+      interval = seconds / 2592000;
+      if (interval > 1) {
+        ret = Math.floor(interval) + " month";
+      }
+      interval = seconds / 86400;
+      if (interval > 1) {
+        ret = Math.floor(interval) + " day";
+      }
+      interval = seconds / 3600;
+      if (interval > 1) {
+        ret = Math.floor(interval) + " hour";
+      }
+      interval = seconds / 60;
+      if (interval > 1) {
+        ret = Math.floor(interval) + " minute";
+      }
+      ret = Math.floor(seconds) + " second";
+      ret += "s ago";
+      if (ret === "0 seconds ago") return "just now";
+      return ret;
+    },
+
     async generateLink() {
       let queryParam = `linknote=${this.content[1]}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParam}`;
@@ -62,13 +98,10 @@ export default {
 </script>
 
 <style>
-.card-buttons {
+.card-header {
   padding-right: 9px;
   padding-bottom: 5px;
   display: flex;
-  justify-content: flex-end;
-  border-bottom: 1px solid;
-  border-image: linear-gradient(to right, transparent 83%, #d0d4da 17%) 100% 2;
 }
 
 .starter {
@@ -78,14 +111,30 @@ export default {
   font-size: 20px;
 }
 
+.card-header {
+  display: flex;
+}
+
 .card-button {
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.card-buttons {
+  padding-bottom: 3px;
+  display: flex;
   cursor: pointer;
   font-size: 16px;
-  margin-left: 8px;
 }
 
 .card-button:hover {
   transform: scale(1.15);
+}
+
+.created-date {
+  margin-right: auto;
+  font-size: 12px;
+  color: rgb(9, 120, 9);
 }
 
 .card-content {
@@ -104,7 +153,7 @@ export default {
 
 .card-container {
   border-radius: 22px 22px 22px 4px;
-  min-height: 100px;
+  min-height: 65px;
   padding: 16px;
   border: 2px solid #b1b4ba;
   transition: background-color 4000ms ease-out;

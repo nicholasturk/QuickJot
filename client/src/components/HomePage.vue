@@ -1,5 +1,8 @@
 <template>
   <div id="home-page">
+    <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
+    <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
+    <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
       <div class="title">
         quicknote.
@@ -13,7 +16,7 @@
             class="note-input"
             v-model="inputBody"
             :placeholder="inputText"
-            @keyup.right="submitNote()"
+            @keyup.enter="submitNote"
           />
         </div>
         <div class="search-button">
@@ -28,6 +31,14 @@
           />
         </div>
         <div class="topButtons">
+          <font-awesome-icon
+            class="topButton"
+            size="2x"
+            icon="clipboard-question"
+            @click="exportCollection()"
+            id="cbq"
+            color="#b1b4ba"
+          />
           <font-awesome-icon
             class="topButton"
             @click="() => (this.reversed = !this.reversed)"
@@ -73,7 +84,9 @@ import NoteCard from "./NoteCard";
 export default {
   name: "HomePage",
 
-  components: { NoteCard },
+  components: {
+    NoteCard
+  },
 
   data() {
     return {
@@ -88,6 +101,7 @@ export default {
   },
 
   mounted() {
+    document.getElementById("note-input").focus();
     this.getItems();
     if ("linknote" in this.$route.query) {
       this.linknote = true;
@@ -118,12 +132,21 @@ export default {
       if (this.isSearching) {
         return "Search for a note...";
       } else {
-        return "Add a note (right arrow key)...";
+        return "Add a note...";
       }
     }
   },
 
   methods: {
+    addNote() {
+      if (
+        !document.getElementById("note-input") !== document.activeElement &&
+        !this.isSearching
+      ) {
+        !document.getElementById("note-input").focus();
+      }
+    },
+
     deleteItem(key) {
       this.items.splice(this.items.map(e => e[0]).indexOf(key), 1);
       localStorage.removeItem(key);
@@ -132,7 +155,7 @@ export default {
     addItem(content) {
       let key = Date.now().toString();
       this.items.unshift([key, content]);
-      localStorage.setItem(key, content);
+      localStorage.setItem(key, [key, content]);
     },
 
     exportCollection() {
@@ -152,13 +175,32 @@ export default {
       });
     },
 
-    submitNote() {
+    submitNote(e) {
+      if (e.shiftKey) {
+        return;
+      }
       if (this.isSearching) {
         return;
       }
       this.linknote = false;
       this.addItem(this.inputBody);
       this.inputBody = "";
+    },
+
+    activateSearch(e) {
+      if (
+        !this.isSearching &&
+        document.getElementById("note-input") !== document.activeElement
+      ) {
+        this.search();
+      }
+    },
+
+    deactivateSearch(e) {
+      if (this.isSearching) {
+        this.search();
+      }
+      document.getElementById("note-input").blur();
     },
 
     search() {
@@ -227,6 +269,10 @@ export default {
 .dndrop-draggable-wrapper {
   margin-left: auto;
   margin-right: auto;
+}
+
+#cbq {
+  padding-right: 3px;
 }
 
 .topButton {
