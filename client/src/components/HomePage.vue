@@ -35,16 +35,7 @@
             class="topButton"
             size="2x"
             icon="clipboard-question"
-            @click="exportCollection()"
             id="cbq"
-            color="#b1b4ba"
-          />
-          <font-awesome-icon
-            class="topButton"
-            @click="() => (this.reversed = !this.reversed)"
-            size="2x"
-            id="sort-button"
-            icon="sort"
             color="#b1b4ba"
           />
           <font-awesome-icon
@@ -65,15 +56,30 @@
           />
         </div>
       </div>
+      <div class="filter-section" v-if="items.length > 0">
+        <div class="filter-message">
+          {{ !this.reversed ? "new to old" : "old to new" }}
+        </div>
+        <font-awesome-icon
+          class="topButton"
+          @click="() => (this.reversed = !this.reversed)"
+          size="2x"
+          id="sort-button"
+          icon="sort"
+          color="#b1b4ba"
+        />
+      </div>
 
-      <note-card
-        v-for="(item, idx) in itemsFiltered"
-        :key="(item.id, idx)"
-        :id="item[0]"
-        :content="item"
-        :newlyAdded="linknote && idx === 0"
-        @deleteItem="deleteItem"
-      ></note-card>
+      <div class="cards">
+        <note-card
+          v-for="(item, idx) in itemsFiltered"
+          :key="(item.id, idx)"
+          :id="item[0]"
+          :content="item"
+          :newlyAdded="linknote && idx === 0"
+          @deleteItem="deleteItem"
+        ></note-card>
+      </div>
     </div>
   </div>
 </template>
@@ -107,6 +113,11 @@ export default {
       this.linknote = true;
       this.addItem(this.$route.query.linknote);
       this.$router.push(this.$route.path);
+    } else if ("linknotes" in this.$route.query) {
+      this.$route.query.linknotes
+        .split(this.$route.query.joiner)
+        .forEach(i => this.addItem(i));
+      this.$router.push(this.$route.path);
     }
   },
 
@@ -122,9 +133,9 @@ export default {
     itemsFiltered() {
       let ret = this.items.filter(e => e[1].match(this.searchBody));
       if (this.reversed) {
-        return ret.reverse();
+        return ret.sort((a, b) => a[0] - b[0]);
       } else {
-        return ret;
+        return ret.sort((a, b) => b[0] - a[0]);
       }
     },
 
@@ -153,12 +164,28 @@ export default {
     },
 
     addItem(content) {
-      let key = Date.now().toString();
-      this.items.unshift([key, content]);
-      localStorage.setItem(key, [key, content]);
+      let key = Date.now();
+      if (localStorage.getItem(key) !== null) {
+        key += 1;
+      }
+      if (this.reversed) {
+        this.items.push([key, content.slice(0, -1)]);
+      } else {
+        this.items.unshift([key, content.slice(0, -1)]);
+      }
+      localStorage.setItem(key, content.slice(0, -1));
     },
 
-    exportCollection() {
+    async exportCollection() {
+      let splitter =
+        "_" +
+        Math.random()
+          .toString(36)
+          .substr(2, 5);
+      let items = this.items.map(i => i[1]).join(splitter);
+      let queryParams = `linknotes=${items}&joiner=${splitter}`;
+      let url = `${location.protocol}//${location.host}${location.pathname}?${queryParams}`;
+      await navigator.clipboard.writeText(url);
       this.notify("Shareable collection link copied to clipboard.");
     },
 
@@ -217,9 +244,7 @@ export default {
     },
 
     getItems() {
-      this.items = Object.entries(localStorage)
-        .reverse()
-        .filter(i => i[0] != "randid");
+      this.items = Object.entries(localStorage).filter(i => i[0] != "randid");
     },
 
     clear() {
@@ -236,18 +261,19 @@ export default {
 
 <style scoped>
 .note-input {
-  height: 45px;
+  height: 65px;
   border: 2px solid #b1b4ba;
   padding-left: 15px;
   padding-top: 10px;
   padding-right: 10px;
+  font-size: 15px;
   border-radius: 15px 15px 2px 15px;
   width: 93%;
   max-width: 93%;
 }
 
 .input-section {
-  width: 70%;
+  width: 68%;
 }
 
 .rotate-left {
@@ -258,7 +284,7 @@ export default {
 
 .rotate-right {
   transform: rotate(90deg);
-  transition-duration: 500ms;
+  transition-duration: 300ms;
 }
 
 .note-input:focus {
@@ -273,6 +299,20 @@ export default {
 
 #cbq {
   padding-right: 3px;
+}
+
+.filter-section {
+  display: flex;
+  margin-bottom: 9px;
+  margin-top: 20px;
+}
+
+.filter-message {
+  margin-left: auto;
+  font-size: 11px;
+  padding-top: 5px;
+  color: #bec2bb;
+  margin-right: 9px;
 }
 
 .topButton {
@@ -303,8 +343,16 @@ export default {
   font-size: 27px;
 }
 
+#sort-button {
+  margin-top: 0px;
+  margin-right: 35px;
+}
+
+#sort-button:hover {
+  transform: scale(1.15);
+}
+
 .controls {
-  margin-bottom: 40px;
   display: flex;
 }
 

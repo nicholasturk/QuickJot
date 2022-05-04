@@ -1,5 +1,5 @@
 <template>
-  <div id="note-card">
+  <div class="note-card">
     <div class="card-container">
       <div class="card-header">
         <div class="created-date">
@@ -42,33 +42,41 @@ export default {
   methods: {
     timeSince(date) {
       var seconds = Math.floor((new Date() - date) / 1000);
+      if (seconds === 0) {
+        return "just now";
+      }
 
       var interval = seconds / 31536000;
-      var ret = "";
+      var timeCode = "";
 
       if (interval >= 1) {
-        ret = Math.floor(interval) + " year";
+        timeCode = "year";
+      } else {
+        interval = seconds / 2592000;
+        if (interval >= 1) {
+          timeCode = "month";
+        } else {
+          interval = seconds / 86400;
+          if (interval >= 1) {
+            timeCode = "day";
+          } else {
+            interval = seconds / 3600;
+            if (interval >= 1) {
+              timeCode = "hour";
+            } else {
+              interval = seconds / 60;
+              if (interval >= 1) {
+                timeCode = "minute";
+              } else {
+                timeCode = "second";
+              }
+            }
+          }
+        }
       }
-      interval = seconds / 2592000;
-      if (interval > 1) {
-        ret = Math.floor(interval) + " month";
-      }
-      interval = seconds / 86400;
-      if (interval > 1) {
-        ret = Math.floor(interval) + " day";
-      }
-      interval = seconds / 3600;
-      if (interval > 1) {
-        ret = Math.floor(interval) + " hour";
-      }
-      interval = seconds / 60;
-      if (interval > 1) {
-        ret = Math.floor(interval) + " minute";
-      }
-      ret = Math.floor(seconds) + " second";
-      ret += "s ago";
-      if (ret === "0 seconds ago") return "just now";
-      return ret;
+
+      let numTimes = timeCode !== "second" ? Math.floor(interval) : seconds;
+      return `${numTimes} ${timeCode}${numTimes > 1 ? "s" : ""} ago`;
     },
 
     async generateLink() {
@@ -133,11 +141,15 @@ export default {
 
 .created-date {
   margin-right: auto;
-  font-size: 12px;
-  color: rgb(9, 120, 9);
+  padding-top: 5px;
+  font-size: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding-left: 4px;
+  color: rgba(24, 150, 24, 0.516);
 }
 
 .card-content {
+  font-family: Arial, Helvetica, sans-serif !important;
   display: flex;
   margin-top: 5px;
   font-size: 17px;
@@ -152,13 +164,13 @@ export default {
 }
 
 .card-container {
-  border-radius: 22px 22px 22px 4px;
+  border-radius: 22px 22px 22px 6px;
   min-height: 65px;
   padding: 16px;
   border: 2px solid #b1b4ba;
   transition: background-color 4000ms ease-out;
   margin-bottom: 40px;
-  box-shadow: 0 19px 50px rgba(230, 223, 223, 0.3),
-    0 12px 12px rgba(133, 129, 129, 0.3);
+  box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
+    0 8px 8px rgba(186, 184, 184, 0.3);
 }
 </style>
