@@ -175,11 +175,11 @@ export default {
 
     addItem(content) {
       let key = Date.now();
+      let t = content;
       if (localStorage.getItem(key) !== null) {
         key += 1;
       }
       if (this.reversed) {
-        let t = content;
         if (content[-1] === "\n") {
           t = content.slice(0, -1);
         }
