@@ -3,6 +3,7 @@ import App from "./App.vue";
 import VueNotification from "@mathieustan/vue-notification";
 import VueRouter from "vue-router";
 import KeyPress from "vue-keypress";
+import vueAlerts from "vue-alerts";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
@@ -29,6 +30,11 @@ library.add(faLink);
 
 Vue.use(VueRouter);
 Vue.use(VueNotification);
+Vue.use(vueAlerts, {
+  developerMode: true,
+  presentBlockTime: 100,
+  dismissBlockTime: 100
+});
 Vue.component("key-press", KeyPress);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -1,5 +1,6 @@
 <template>
   <div id="home-page">
+    <alert>hi</alert>
     <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
     <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
@@ -35,6 +36,7 @@
             class="topButton"
             size="2x"
             icon="clipboard-question"
+            @click="displayInfo()"
             id="cbq"
             color="#b1b4ba"
           />
@@ -110,6 +112,7 @@ export default {
     document.getElementById("note-input").focus();
     this.getItems();
     if ("linknote" in this.$route.query) {
+      console.log(this.$route.query.linknote);
       this.linknote = true;
       this.addItem(this.$route.query.linknote);
       this.$router.push(this.$route.path);
@@ -149,6 +152,13 @@ export default {
   },
 
   methods: {
+    displayInfo() {
+      this.$alert.present(
+        "Info",
+        "This app uses local storage. Clearing cache will remove all notes.\n\nHotkeys:\nA -> add note\nS -> search for note\nesc -> unfocus textarea or exit this modal"
+      );
+    },
+
     addNote() {
       if (
         !document.getElementById("note-input") !== document.activeElement &&
@@ -169,11 +179,15 @@ export default {
         key += 1;
       }
       if (this.reversed) {
-        this.items.push([key, content.slice(0, -1)]);
+        let t = content;
+        if (content[-1] === "\n") {
+          t = content.slice(0, -1);
+        }
+        this.items.push([key, t]);
       } else {
-        this.items.unshift([key, content.slice(0, -1)]);
+        this.items.unshift([key, t]);
       }
-      localStorage.setItem(key, content.slice(0, -1));
+      localStorage.setItem(key, t);
     },
 
     async exportCollection() {
