@@ -282,7 +282,7 @@ export default {
   padding-right: 10px;
   font-size: 15px;
   border-radius: 15px 15px 2px 15px;
-  width: 93%;
+  width: 85%;
   max-width: 93%;
 }
 
@@ -384,7 +384,12 @@ export default {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  padding-right: 70px;
-  width: 40em;
+  max-width: 40em;
+}
+
+@media (max-width: 480px) {
+  .note-input {
+    color: red !important;
+  }
 }
 </style>
