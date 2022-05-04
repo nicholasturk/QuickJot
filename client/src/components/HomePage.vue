@@ -6,7 +6,7 @@
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
       <div class="title">
-        quicknote.
+        quickjot.
       </div>
       <div class="controls">
         <div class="input-section">
@@ -155,7 +155,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\nHotkeys:\nA -> add note\nS -> search for note\nesc -> unfocus textarea or exit this modal"
+        "This app uses local storage. Clearing cache will remove all notes.\n\nHotkeys:\nA -> add note\nS -> search for note\nesc -> unfocus textarea/stop searching or exit this modal"
       );
     },
 
@@ -273,7 +273,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .note-input {
   height: 65px;
   border: 2px solid #b1b4ba;
@@ -282,7 +282,7 @@ export default {
   padding-right: 10px;
   font-size: 15px;
   border-radius: 15px 15px 2px 15px;
-  width: 85%;
+  width: 93%;
   max-width: 93%;
 }
 
@@ -359,7 +359,7 @@ export default {
 
 #sort-button {
   margin-top: 0px;
-  margin-right: 35px;
+  margin-right: 5px;
 }
 
 #sort-button:hover {
@@ -380,16 +380,40 @@ export default {
   margin-bottom: 1px;
 }
 
+body {
+  filter: hue-rotate(180deg);
+}
+
 .content {
   text-align: center;
   margin-left: auto;
+  padding-right: 50px;
+  border-right: 2px dotted #b9bab1;
   margin-right: auto;
   max-width: 40em;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 530px) {
+  .content {
+    border-right: 0px;
+    padding-right: 0px;
+  }
+  #export-button {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+
   .note-input {
-    color: red !important;
+    width: 85%;
+  }
+
+  .topButton {
+    margin-right: 2px;
+    font-size: 20px;
+  }
+
+  .card-button {
+    font-size: 12px;
   }
 }
 </style>
