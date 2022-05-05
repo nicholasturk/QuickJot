@@ -1,25 +1,28 @@
 <template>
-  <div class="note-card">
-    <div class="card-container">
-      <div class="card-header">
-        <div class="created-date">
-          {{ timeSince(content[0]) }}
+  <div class="note-card-root">
+    <div class="note-card">
+      <div v-html="dateSinceCss"></div>
+      <div class="card-container">
+        <div class="card-header">
+          <div class="created-date">
+            {{ timeSince(content[0]) }}
+          </div>
+          <div class="card-buttons">
+            <div class="card-button" @click="copyToClipboard()">
+              <font-awesome-icon icon="copy" size="lg" color="#b1b4ba" />
+            </div>
+            <div class="card-button" @click="generateLink()">
+              <font-awesome-icon icon="link" size="lg" color="#b1b4ba" />
+            </div>
+            <div class="card-button" @click="$emit('deleteItem', content[0])">
+              <font-awesome-icon icon="trash-can" size="lg" color="#b1b4ba" />
+            </div>
+          </div>
         </div>
-        <div class="card-buttons">
-          <div class="card-button" @click="copyToClipboard()">
-            <font-awesome-icon icon="copy" size="lg" color="#b1b4ba" />
-          </div>
-          <div class="card-button" @click="generateLink()">
-            <font-awesome-icon icon="link" size="lg" color="#b1b4ba" />
-          </div>
-          <div class="card-button" @click="$emit('deleteItem', content[0])">
-            <font-awesome-icon icon="trash-can" size="lg" color="#b1b4ba" />
-          </div>
+        <div class="card-content">
+          <span class="starter">></span>
+          <div>{{ content[1] }}</div>
         </div>
-      </div>
-      <div class="card-content">
-        <span class="starter">></span>
-        <div>{{ content[1] }}</div>
       </div>
     </div>
   </div>
@@ -101,11 +104,35 @@ export default {
         closeDelay: 3000
       });
     }
+  },
+  
+  computed: {
+    dateSinceCss(){  
+      return `<style>      
+      .note-card-root::before{
+        color: #aaaca9;
+        display: inline-block;
+        font-size: 37px;
+        float: right;
+        margin-right: -10px;
+        margin-top: -18px;
+        content: "\\2022"
+      }</style>`
+    },
   }
 };
 </script>
 
 <style>
+
+.note-card{
+  padding-right: 50px;
+  border-radius: 0px;
+  border-right: 2px dotted #bec2bb;
+  padding-bottom: 55px;
+  /* background-color: rgba(255, 225, 0, 0.105); */
+}
+
 .card-header {
   padding-right: 9px;
   padding-bottom: 5px;
@@ -131,6 +158,7 @@ export default {
 .card-buttons {
   padding-bottom: 3px;
   display: flex;
+  margin-left: auto;
   cursor: pointer;
   font-size: 16px;
 }
@@ -145,7 +173,7 @@ export default {
   font-size: 10px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding-left: 4px;
-  color: rgba(24, 150, 24, 0.516);
+  color: rgba(24, 150, 24, 0.345);
 }
 
 .card-content {
@@ -165,12 +193,41 @@ export default {
 
 .card-container {
   border-radius: 22px 22px 22px 6px;
-  min-height: 65px;
+  min-height: 85px;
+  background-color: white;
   padding: 16px;
   border: 2px solid #b1b4ba;
   transition: background-color 4000ms ease-out;
-  margin-bottom: 40px;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);
 }
+
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+    
+}
+
+    /* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 560px) {
+  .note-card{
+    padding-right: 15px;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+
+}
+
 </style>

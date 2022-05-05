@@ -72,6 +72,7 @@
         />
       </div>
 
+    <div v-html="dateSinceCss"></div>
       <div class="cards">
         <note-card
           v-for="(item, idx) in itemsFiltered"
@@ -155,7 +156,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\nHotkeys:\nA -> add note\nS -> search for note\nesc -> unfocus textarea/stop searching or exit this modal"
+        "This app uses local storage. Clearing cache will remove all notes.\n\nHotkeys:\nA -> add note\nS -> search for note\nesc -> unfocus textarea/stop searching or exit this modal\nshift + enter -> for new line on textarea"
       );
     },
 
@@ -220,7 +221,7 @@ export default {
       if (e.shiftKey) {
         return;
       }
-      if (this.isSearching) {
+      if (this.isSearching) { 
         return;
       }
       this.linknote = false;
@@ -316,6 +317,7 @@ export default {
 }
 
 .filter-section {
+  padding-right: 55px;
   display: flex;
   margin-bottom: 9px;
   margin-top: 20px;
@@ -380,24 +382,25 @@ export default {
   margin-bottom: 1px;
 }
 
-body {
-  filter: hue-rotate(180deg);
-}
-
 .content {
   text-align: center;
   margin-left: auto;
-  padding-right: 50px;
-  border-right: 2px dotted #b9bab1;
   margin-right: auto;
-  max-width: 40em;
+  max-width: 45em;
 }
 
-@media (max-width: 530px) {
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+    
+}
+
+    /* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 560px) {
   .content {
     border-right: 0px;
     padding-right: 0px;
   }
+  
   #export-button {
     font-size: 18px;
     margin-right: 5px;
@@ -414,6 +417,25 @@ body {
 
   .card-button {
     font-size: 12px;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+  #search-button{
+    margin-left: 10px;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  .content{
+    max-width: 55em;
   }
 }
 </style>
