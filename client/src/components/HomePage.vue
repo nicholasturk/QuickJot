@@ -58,9 +58,9 @@
           />
         </div>
       </div>
-      <div class="filter-section" v-if="items.length > 0">
+      <div class="filter-section">
         <div class="filter-message">
-          {{ !this.reversed ? "new to old" : "old to new" }}
+          {{ !this.reversed ? "" : "" }}
         </div>
         <font-awesome-icon
           class="topButton"
@@ -72,13 +72,12 @@
         />
       </div>
 
-    <div v-html="dateSinceCss"></div>
       <div class="cards">
         <note-card
           v-for="(item, idx) in itemsFiltered"
           :key="(item.id, idx)"
-          :id="item[0]"
           :content="item"
+          :isLast="idx == itemsFiltered.length - 1 ? true : false"
           :newlyAdded="linknote && idx === 0"
           @deleteItem="deleteItem"
         ></note-card>
@@ -137,10 +136,12 @@ export default {
     itemsFiltered() {
       let ret = this.items.filter(e => e[1].match(this.searchBody));
       if (this.reversed) {
-        return ret.sort((a, b) => a[0] - b[0]);
+        ret.sort((a, b) => a[0] - b[0]);
       } else {
-        return ret.sort((a, b) => b[0] - a[0]);
+        ret.sort((a, b) => b[0] - a[0]);
       }
+      return ret;
+      
     },
 
     inputText() {
@@ -156,7 +157,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\nHotkeys:\nA -> add note\nS -> search for note\nesc -> unfocus textarea/stop searching or exit this modal\nshift + enter -> for new line on textarea"
+        "This app uses local storage. Clearing cache will remove all notes.\n\n\n\nHotkeys:\n\nA: add note\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line on textarea"
       );
     },
 
@@ -270,7 +271,7 @@ export default {
         this.shouldShake = false;
       }, 1000);
     }
-  }
+  },
 };
 </script>
 
@@ -346,8 +347,9 @@ export default {
 }
 
 .title {
+  font-family: monospace;
   display: flex;
-  font-size: 30px;
+  font-size: 25px;
   margin-top: 40px;
   margin-bottom: 30px;
   padding-left: 15px;
@@ -407,6 +409,7 @@ export default {
   }
 
   .note-input {
+    font-family: Helvetica;
     width: 85%;
   }
 

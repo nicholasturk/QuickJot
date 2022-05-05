@@ -7,6 +7,6 @@
 <style>
 html * {
   font-size: 1rem;
-  font-family: monospace;
+  font-family: Helvetica;
 }
 </style>

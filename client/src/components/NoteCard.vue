@@ -1,6 +1,6 @@
 <template>
   <div class="note-card-root">
-    <div class="note-card">
+    <div class="note-card" :class="{ 'not-last-card': !isLast }" :id="content[0]">
       <div v-html="dateSinceCss"></div>
       <div class="card-container">
         <div class="card-header">
@@ -21,7 +21,7 @@
         </div>
         <div class="card-content">
           <span class="starter">></span>
-          <div>{{ content[1] }}</div>
+          <div class="card-content-text">{{ content[1] }}</div>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  props: ["content", "newlyAdded"],
+  props: ["content", "newlyAdded", "isLast"],
 
   mounted() {
     let orig = document.getElementsByClassName("card-container")[0];
@@ -129,21 +129,20 @@ export default {
   padding-right: 50px;
   border-radius: 0px;
   border-right: 2px dotted #bec2bb;
-  padding-bottom: 55px;
-  /* background-color: rgba(255, 225, 0, 0.105); */
 }
 
 .card-header {
-  padding-right: 9px;
-  padding-bottom: 5px;
+  border-bottom: 1px solid #bec2bb4f;
+  margin-bottom: 10px;
+  padding-bottom: 3px;
   display: flex;
 }
 
 .starter {
   user-select: none;
   color: #b1b4ba;
-  margin-right: 5px;
-  font-size: 20px;
+  margin-right: 6px;
+  font-size: 17px;
 }
 
 .card-header {
@@ -167,20 +166,34 @@ export default {
   transform: scale(1.15);
 }
 
+.not-last-card{
+  padding-bottom: 55px;
+}
+
 .created-date {
   margin-right: auto;
   padding-top: 5px;
+  margin-top: 5px;
   font-size: 10px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Helvetica;
   padding-left: 4px;
   color: rgba(24, 150, 24, 0.345);
 }
 
-.card-content {
-  font-family: Arial, Helvetica, sans-serif !important;
+.card-content-text{
+  color: rgba(0, 0, 0, 0.824);
+  font-family: Helvetica;
+}
+
+html .card-content {
+  line-height: 23px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2px;
   display: flex;
   margin-top: 5px;
-  font-size: 17px;
+  padding: 25px;
+  padding-left: 5px;
+  padding-top: 10px;
   word-break: break-all;
   text-align: left;
   overflow: hidden;
