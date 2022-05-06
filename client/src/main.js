@@ -4,6 +4,7 @@ import VueNotification from "@mathieustan/vue-notification";
 import VueRouter from "vue-router";
 import KeyPress from "vue-keypress";
 import vueAlerts from "vue-alerts";
+import VTooltip from "v-tooltip";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
@@ -29,11 +30,12 @@ library.add(faTrashCan);
 library.add(faLink);
 
 Vue.use(VueRouter);
+Vue.use(VTooltip);
 Vue.use(VueNotification);
 Vue.use(vueAlerts, {
   developerMode: true,
   presentBlockTime: 100,
-  dismissBlockTime: 100
+  dismissBlockTime: 100,
 });
 Vue.component("key-press", KeyPress);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
@@ -42,10 +44,10 @@ Vue.config.productionTip = false;
 
 const router = new VueRouter({
   routes,
-  mode: "history"
+  mode: "history",
 });
 
 new Vue({
   router,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

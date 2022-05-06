@@ -5,9 +5,7 @@
     <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
-      <div class="title">
-        quickjot.
-      </div>
+      <div class="title">quickjot.</div>
       <div class="controls">
         <div class="input-section">
           <textarea
@@ -22,6 +20,7 @@
         </div>
         <div class="search-button">
           <font-awesome-icon
+            v-tooltip="'Search'"
             class="topButton"
             id="search-button"
             @click="search()"
@@ -33,6 +32,7 @@
         </div>
         <div class="topButtons">
           <font-awesome-icon
+            v-tooltip="'Help'"
             class="topButton"
             size="2x"
             icon="clipboard-question"
@@ -41,6 +41,7 @@
             color="#b1b4ba"
           />
           <font-awesome-icon
+            v-tooltip="'Copy shareable collection to clipboard'"
             class="topButton"
             size="2x"
             icon="file-export"
@@ -49,6 +50,7 @@
             color="#b1b4ba"
           />
           <font-awesome-icon
+            v-tooltip="'Delete collection'"
             class="topButton"
             @click="clear()"
             :class="{ 'fa-shake': shouldShake }"
@@ -63,6 +65,7 @@
           {{ !this.reversed ? "" : "" }}
         </div>
         <font-awesome-icon
+          v-tooltip="`Sort`"
           class="topButton"
           @click="() => (this.reversed = !this.reversed)"
           size="2x"
@@ -93,7 +96,7 @@ export default {
   name: "HomePage",
 
   components: {
-    NoteCard
+    NoteCard,
   },
 
   data() {
@@ -104,7 +107,7 @@ export default {
       isSearching: false,
       linknote: false,
       linknotes: false,
-      reversed: false
+      reversed: false,
     };
   },
 
@@ -119,7 +122,7 @@ export default {
     } else if ("linknotes" in this.$route.query) {
       this.$route.query.linknotes
         .split(this.$route.query.joiner)
-        .forEach(i => this.addItem(i));
+        .forEach((i) => this.addItem(i));
       this.$router.push(this.$route.path);
     }
   },
@@ -134,14 +137,13 @@ export default {
     },
 
     itemsFiltered() {
-      let ret = this.items.filter(e => e[1].match(this.searchBody));
+      let ret = this.items.filter((e) => e[1].match(this.searchBody));
       if (this.reversed) {
         ret.sort((a, b) => a[0] - b[0]);
       } else {
         ret.sort((a, b) => b[0] - a[0]);
       }
       return ret;
-      
     },
 
     inputText() {
@@ -150,7 +152,7 @@ export default {
       } else {
         return "Add a note...";
       }
-    }
+    },
   },
 
   methods: {
@@ -171,7 +173,7 @@ export default {
     },
 
     deleteItem(key) {
-      this.items.splice(this.items.map(e => e[0]).indexOf(key), 1);
+      this.items.splice(this.items.map((e) => e[0]).indexOf(key), 1);
       localStorage.removeItem(key);
     },
 
@@ -193,16 +195,14 @@ export default {
     },
 
     async exportCollection() {
-      let splitter =
-        "_" +
-        Math.random()
-          .toString(36)
-          .substr(2, 5);
-      let items = this.items.map(i => i[1]).join(splitter);
+      let splitter = "_" + Math.random().toString(36).substr(2, 5);
+      let items = this.items.map((i) => i[1]).join(splitter);
       let queryParams = `linknotes=${items}&joiner=${splitter}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParams}`;
-      if(url.length > 2048) {
-        this.notify("Error: Collection too large. Must be under 2000 characters.");
+      if (url.length > 2048) {
+        this.notify(
+          "Error: Collection too large. Must be under 2000 characters."
+        );
       } else {
         await navigator.clipboard.writeText(url);
         this.notify("Shareable collection link copied to clipboard.");
@@ -218,7 +218,7 @@ export default {
         left: false,
         right: false,
         showClose: false,
-        closeDelay: 3000
+        closeDelay: 3000,
       });
     },
 
@@ -226,7 +226,7 @@ export default {
       if (e.shiftKey) {
         return;
       }
-      if (this.isSearching) { 
+      if (this.isSearching) {
         return;
       }
       this.linknote = false;
@@ -264,17 +264,17 @@ export default {
     },
 
     getItems() {
-      this.items = Object.entries(localStorage).filter(i => i[0] != "randid");
+      this.items = Object.entries(localStorage).filter((i) => i[0] != "randid");
     },
 
     clear() {
       this.shouldShake = true;
-      this.items.forEach(e => localStorage.removeItem(e[0]));
+      this.items.forEach((e) => localStorage.removeItem(e[0]));
       this.getItems();
       setTimeout(() => {
         this.shouldShake = false;
       }, 1000);
-    }
+    },
   },
 };
 </script>
@@ -395,19 +395,22 @@ export default {
   max-width: 45em;
 }
 
-/* Custom, iPhone Retina */ 
-@media only screen and (max-width : 320px) {
-    
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 320px) {
 }
 
-    /* Extra Small Devices, Phones */ 
-@media only screen and (max-width : 560px) {
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 560px) {
+  .filter-section {
+    padding-right: 20px;
+    margin-top: 40px;
+  }
 
   .content {
     border-right: 0px;
     padding-right: 0px;
   }
-  
+
   #export-button {
     font-size: 18px;
     margin-right: 5px;
@@ -418,36 +421,63 @@ export default {
     width: 85%;
   }
 
+  #export-button {
+    font-size: 25px;
+    margin-left: 0px;
+  }
+
+  .search-button {
+    margin-right: 20px;
+  }
+
+  .input-section {
+    width: 90%;
+  }
+
+  .note-input {
+    width: 90%;
+  }
+
+  .topButtons {
+    margin-top: -30px;
+  }
+
   .topButton {
+    display: block;
     margin-right: 2px;
-    font-size: 20px;
+    font-size: 25px;
   }
 
   .card-button {
-    font-size: 12px;
+    font-size: 15px;
   }
 }
 
 /* Small Devices, Tablets */
-@media only screen and (max-width : 768px) {
-  #search-button{
+@media only screen and (max-width: 768px) {
+  #search-button {
     margin-left: 10px;
   }
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-  .note-input{
+@media only screen and (min-width: 992px) {
+  .note-input {
     height: 100px;
   }
 }
 
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-  .content{
+@media only screen and (min-width: 1200px) {
+  .content {
     max-width: 55em;
   }
-  .note-input{
+
+  body {
+    padding-bottom: 100px;
+  }
+
+  .note-input {
     height: 100px;
   }
 }

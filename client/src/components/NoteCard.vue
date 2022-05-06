@@ -1,6 +1,10 @@
 <template>
   <div class="note-card-root">
-    <div class="note-card" :class="{ 'not-last-card': !isLast }" :id="content[0]">
+    <div
+      class="note-card"
+      :class="{ 'not-last-card': !isLast }"
+      :id="content[0]"
+    >
       <div v-html="dateSinceCss"></div>
       <div class="card-container">
         <div class="card-header">
@@ -8,14 +12,32 @@
             {{ timeSince(content[0]) }}
           </div>
           <div class="card-buttons">
-            <div class="card-button" @click="copyToClipboard()">
-              <font-awesome-icon icon="copy" size="lg" color="#b1b4ba" />
+            <div @click="copyToClipboard()">
+              <font-awesome-icon
+                class="card-button"
+                v-tooltip="'Copy content'"
+                icon="copy"
+                size="lg"
+                color="#b1b4ba"
+              />
             </div>
-            <div class="card-button" @click="generateLink()">
-              <font-awesome-icon icon="link" size="lg" color="#b1b4ba" />
+            <div @click="generateLink()">
+              <font-awesome-icon
+                class="card-button"
+                v-tooltip="'Copy shareable link'"
+                icon="link"
+                size="lg"
+                color="#b1b4ba"
+              />
             </div>
-            <div class="card-button" @click="$emit('deleteItem', content[0])">
-              <font-awesome-icon icon="trash-can" size="lg" color="#b1b4ba" />
+            <div @click="$emit('deleteItem', content[0])">
+              <font-awesome-icon
+                class="card-button"
+                v-tooltip="'Delete note'"
+                icon="trash-can"
+                size="lg"
+                color="#b1b4ba"
+              />
             </div>
           </div>
         </div>
@@ -85,8 +107,10 @@ export default {
     async generateLink() {
       let queryParam = `linknote=${this.content[1]}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParam}`;
-      if(url.length > 2048) {
-        this.notify("Error: Note too large to share. Must be under 2000 characters.");
+      if (url.length > 2048) {
+        this.notify(
+          "Error: Note too large to share. Must be under 2000 characters."
+        );
       } else {
         await navigator.clipboard.writeText(url);
         this.notify("Shareable collection link copied to clipboard.");
@@ -105,13 +129,13 @@ export default {
         left: false,
         right: false,
         showClose: false,
-        closeDelay: 3000
+        closeDelay: 3000,
       });
-    }
+    },
   },
-  
+
   computed: {
-    dateSinceCss(){  
+    dateSinceCss() {
       return `<style>      
       .note-card-root::before{
         color: #aaaca9;
@@ -121,15 +145,14 @@ export default {
         margin-right: -9px;
         margin-top: -26px;
         content: "\\2022"
-      }</style>`
+      }</style>`;
     },
-  }
+  },
 };
 </script>
 
 <style>
-
-.note-card{
+.note-card {
   padding-right: 50px;
   border-radius: 0px;
   border-right: 2px dotted #bec2bbad;
@@ -147,6 +170,14 @@ export default {
   color: #b1b4ba;
   margin-right: 6px;
   font-size: 17px;
+}
+
+.topButton {
+  outline: none;
+}
+
+.card-button {
+  outline: none;
 }
 
 .card-header {
@@ -170,7 +201,7 @@ export default {
   transform: scale(1.15);
 }
 
-.not-last-card{
+.not-last-card {
   padding-bottom: 55px;
 }
 
@@ -184,7 +215,7 @@ export default {
   color: rgba(24, 150, 24, 0.345);
 }
 
-.card-content-text{
+.card-content-text {
   color: rgba(0, 0, 0, 0.824);
   font-family: Helvetica;
 }
@@ -219,32 +250,26 @@ html .card-content {
     0 8px 8px rgba(186, 184, 184, 0.3);
 }
 
-
-/* Custom, iPhone Retina */ 
-@media only screen and (max-width : 320px) {
-    
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 320px) {
 }
 
-    /* Extra Small Devices, Phones */ 
-@media only screen and (max-width : 560px) {
-  .note-card{
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 560px) {
+  .note-card {
     padding-right: 15px;
   }
 }
 
 /* Small Devices, Tablets */
-@media only screen and (max-width : 768px) {
-
+@media only screen and (max-width: 768px) {
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-
+@media only screen and (max-width: 992px) {
 }
 
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-
+@media only screen and (min-width: 1200px) {
 }
-
 </style>
