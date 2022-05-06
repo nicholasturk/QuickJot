@@ -222,21 +222,20 @@ export default {
   margin-right: auto;
   padding-top: 5px;
   margin-top: 5px;
-  font-size: 11px;
+  font-size: 12px;
   font-family: Helvetica;
   padding-left: 4px;
-  color: rgba(24, 150, 24, 0.345);
+  color: rgba(47, 119, 5, 0.45);
 }
 
 .card-content-text {
-  color: rgba(0, 0, 0, 0.824);
+  color: rgba(0, 0, 0, 0.83);
   font-family: Helvetica;
 }
 
 html .card-content {
   line-height: 23px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 2px;
   display: flex;
   margin-top: 5px;
   padding: 25px;
@@ -255,10 +254,10 @@ html .card-content {
 .card-container {
   border-radius: 22px 22px 22px 6px;
   min-height: 85px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.724);
   padding: 16px;
   border: 2px solid #b1b4ba76;
-  transition: background-color 4000ms ease-out;
+  /* transition: background-color 4000ms ease-out; */
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);
 }

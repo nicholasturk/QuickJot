@@ -290,6 +290,7 @@ export default {
     0 8px 8px rgba(186, 184, 184, 0.3);
   min-height: 65px;
   padding-left: 15px;
+  background-color: rgba(255, 255, 255, 0.724);
   padding-top: 10px;
   padding-right: 10px;
   font-size: 15px;
@@ -406,7 +407,10 @@ body {
 }
 
 /* Custom, iPhone Retina */
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 360px) {
+    .search-button {
+    margin-left: 20px;
+  }
 }
 
 /* Extra Small Devices, Phones */
@@ -465,6 +469,11 @@ body {
 
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
+
+  body {
+    padding-bottom: 100px;
+  }
+
   #search-button {
     margin-left: 10px;
   }
@@ -472,9 +481,6 @@ body {
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
-  body {
-    padding-bottom: 100px;
-  }
 
   .note-input {
     height: 100px;
