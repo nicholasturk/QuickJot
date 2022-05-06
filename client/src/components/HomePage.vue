@@ -15,6 +15,7 @@
             class="note-input"
             v-model="inputBody"
             :placeholder="inputText"
+            @keydown="e => e.keyCode == 13 && !e.shiftKey ? e.preventDefault() : ''"
             @keyup.enter="submitNote"
           />
         </div>
@@ -208,7 +209,11 @@ export default {
         );
       } else {
         await navigator.clipboard.writeText(url);
-        this.notify("Shareable collection link copied to clipboard.");
+        if(items.length === 0) {
+          this.notify("Copied, but you might want to add some notes first...");
+        } else {
+          this.notify("Shareable collection link copied to clipboard.");
+        }
       }
     },
 
@@ -284,7 +289,7 @@ export default {
 
 <style>
 .note-input {
-  border: 2px solid #b1b4ba76;
+  border: 2px solid #d9dce2;
   transition: background-color 4000ms ease-out;
   line-height: 1.3em;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
@@ -294,7 +299,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.546);
   padding-top: 20px;
   padding-right: 10px;
-  height: 100px;
+  height: 150px;
   font-size: 15px;
   border-radius: 15px 15px 2px 15px;
   width: 93%;
@@ -307,7 +312,7 @@ export default {
 
 .rotate-left {
   transform: rotate(360deg);
-  transform: scale(1.2);
+  transform: scale(1.1);
   transition-duration: 500ms;
 }
 
@@ -352,6 +357,7 @@ export default {
 }
 
 .topButtons {
+  margin-top: -8px;
   margin-left: auto;
 }
 
@@ -363,7 +369,7 @@ export default {
   margin-left: 50px;
   font-family: monospace;
   display: flex;
-  font-size: 25px;
+  font-size: 22px;
   margin-top: 40px;
   margin-bottom: 30px;
   padding-left: 15px;
@@ -375,8 +381,8 @@ body {
 
 #search-button {
   margin-left: 5px;
-  margin-top: 14px;
-  font-size: 27px;
+  margin-top: 5px;
+  font-size: 30px;
 }
 
 #sort-button {
@@ -460,7 +466,7 @@ body {
   }
 
   .topButtons {
-    margin-top: -30px;
+    margin-top: -17px;
   }
 
   .topButton {
