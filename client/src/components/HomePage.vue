@@ -41,7 +41,7 @@
             color="#b1b4ba"
           />
           <font-awesome-icon
-            v-tooltip="'Copy shareable collection to clipboard'"
+            v-tooltip="'Copy shareable collection'"
             class="topButton"
             size="2x"
             icon="file-export"
@@ -83,6 +83,7 @@
           :isLast="idx == itemsFiltered.length - 1 ? true : false"
           :newlyAdded="linknote && idx === 0"
           @deleteItem="deleteItem"
+          @addItem="addItem"
         ></note-card>
       </div>
     </div>
@@ -159,7 +160,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\n\nHotkeys:\n\nA: add note\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line in textarea"
+        "This app uses local storage. Clearing cache will remove all notes.\n\n\nHotkeys:\n\nA: add note (enter to submit)\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line in textarea"
       );
     },
 
@@ -196,7 +197,9 @@ export default {
 
     async exportCollection() {
       let splitter = "_" + Math.random().toString(36).substr(2, 5);
-      let items = this.items.map((i) => i[1]).join(splitter);
+      let items = this.items
+        .map((i) => encodeURIComponent(i[1]))
+        .join(splitter);
       let queryParams = `linknotes=${items}&joiner=${splitter}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParams}`;
       if (url.length > 2048) {
@@ -281,8 +284,11 @@ export default {
 
 <style>
 .note-input {
+  border: 2px solid #b1b4ba76;
+  transition: background-color 4000ms ease-out;
+  box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
+    0 8px 8px rgba(186, 184, 184, 0.3);
   min-height: 65px;
-  border: 2px solid #b1b4ba;
   padding-left: 15px;
   padding-top: 10px;
   padding-right: 10px;
@@ -308,7 +314,7 @@ export default {
 }
 
 .note-input:focus {
-  border: 2px solid rgb(146, 137, 137);
+  border: 2px solid rgba(146, 137, 137, 0.661);
   outline: none;
 }
 
@@ -357,6 +363,10 @@ export default {
   margin-top: 40px;
   margin-bottom: 30px;
   padding-left: 15px;
+}
+
+body {
+  background-color: rgba(237, 237, 122, 0.34);
 }
 
 #search-button {
@@ -454,7 +464,7 @@ export default {
 }
 
 /* Small Devices, Tablets */
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 768px) {
   #search-button {
     margin-left: 10px;
   }
@@ -462,6 +472,10 @@ export default {
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
+  body {
+    padding-bottom: 100px;
+  }
+
   .note-input {
     height: 100px;
   }
@@ -471,10 +485,6 @@ export default {
 @media only screen and (min-width: 1200px) {
   .content {
     max-width: 55em;
-  }
-
-  body {
-    padding-bottom: 100px;
   }
 
   .note-input {

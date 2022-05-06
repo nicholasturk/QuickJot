@@ -16,7 +16,7 @@
               <font-awesome-icon
                 class="card-button"
                 v-tooltip="'Copy content'"
-                icon="copy"
+                icon="clipboard"
                 size="lg"
                 color="#b1b4ba"
               />
@@ -26,6 +26,15 @@
                 class="card-button"
                 v-tooltip="'Copy shareable link'"
                 icon="link"
+                size="lg"
+                color="#b1b4ba"
+              />
+            </div>
+            <div @click="clone()">
+              <font-awesome-icon
+                class="card-button"
+                v-tooltip="'Clone'"
+                icon="clone"
                 size="lg"
                 color="#b1b4ba"
               />
@@ -65,6 +74,10 @@ export default {
   },
 
   methods: {
+    clone() {
+      this.$emit("addItem", this.content[1]);
+    },
+
     timeSince(date) {
       var seconds = Math.floor((new Date() - date) / 1000);
       if (seconds === 0) {
@@ -105,7 +118,7 @@ export default {
     },
 
     async generateLink() {
-      let queryParam = `linknote=${this.content[1]}`;
+      let queryParam = `linknote=${encodeURIComponent(this.content[1])}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParam}`;
       if (url.length > 2048) {
         this.notify(
@@ -138,11 +151,11 @@ export default {
     dateSinceCss() {
       return `<style>      
       .note-card-root::before{
-        color: #aaaca9;
+        color: rgb(221, 221, 221);
         display: inline-block;
         font-size: 54px;
         float: right;
-        margin-right: -9px;
+        margin-right: -8px;
         margin-top: -26px;
         content: "\\2022"
       }</style>`;
@@ -155,7 +168,7 @@ export default {
 .note-card {
   padding-right: 50px;
   border-radius: 0px;
-  border-right: 2px dotted #bec2bbad;
+  border-right: 2px dotted #bec2bba3;
 }
 
 .card-header {
@@ -209,7 +222,7 @@ export default {
   margin-right: auto;
   padding-top: 5px;
   margin-top: 5px;
-  font-size: 10px;
+  font-size: 11px;
   font-family: Helvetica;
   padding-left: 4px;
   color: rgba(24, 150, 24, 0.345);
@@ -242,9 +255,9 @@ html .card-content {
 .card-container {
   border-radius: 22px 22px 22px 6px;
   min-height: 85px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   padding: 16px;
-  border: 2px solid #b1b4ba;
+  border: 2px solid #b1b4ba76;
   transition: background-color 4000ms ease-out;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);
