@@ -2,10 +2,10 @@
   <div class="note-card-root">
     <div
       class="note-card"
-      :class="{ 'not-last-card': !isLast }"
+      :class="{ 'not-last-card': !isLast, 'nc-bl': !isLast }"
       :id="content[0]"
     >
-      <div v-html="dateSinceCss"></div>
+      <div v-if="!isLast" v-html="dateSinceCss"></div>
       <div class="card-container">
         <div class="card-header">
           <div class="created-date">
@@ -151,13 +151,13 @@ export default {
     dateSinceCss() {
       return `<style>      
       .note-card-root::before{
-        color: rgb(221, 221, 221);
+        color: #d9dce2;
         display: inline-block;
-        font-size: 54px;
-        float: right;
-        margin-right: -8px;
-        margin-top: -26px;
-        content: "\\2022"
+        font-size: 17px;
+        float: left;
+        margin-top: -10px;
+        letter-spacing: -1.7px;
+        content: "-------------"
       }</style>`;
     },
   },
@@ -166,13 +166,16 @@ export default {
 
 <style>
 .note-card {
-  padding-right: 50px;
+  padding-left: 47px;
   border-radius: 0px;
-  border-right: 2px dotted #bec2bba3;
+}
+
+.nc-bl{
+  border-left: 2px solid #bec2bb79;
 }
 
 .card-header {
-  border-bottom: 1px solid #bec2bb4f;
+  border-bottom: 1px solid #bec2bb42;
   margin-bottom: 10px;
   padding-bottom: 3px;
   display: flex;
@@ -225,7 +228,7 @@ export default {
   font-size: 12px;
   font-family: Helvetica;
   padding-left: 4px;
-  color: rgba(47, 119, 5, 0.45);
+  color: rgba(1, 2, 0, 0.156);
 }
 
 .card-content-text {
@@ -252,11 +255,11 @@ html .card-content {
 }
 
 .card-container {
-  border-radius: 22px 22px 22px 6px;
+  border-radius: 0px 22px 22px 6px;
   min-height: 85px;
   background-color: rgba(255, 255, 255, 0.724);
   padding: 16px;
-  border: 2px solid #b1b4ba76;
+  border: 2px solid #d9dce2;
   /* transition: background-color 4000ms ease-out; */
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);

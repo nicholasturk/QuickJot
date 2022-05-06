@@ -291,8 +291,9 @@ export default {
   min-height: 65px;
   padding-left: 15px;
   background-color: rgba(255, 255, 255, 0.724);
-  padding-top: 10px;
+  padding-top: 20px;
   padding-right: 10px;
+  height: 100px;
   font-size: 15px;
   border-radius: 15px 15px 2px 15px;
   width: 93%;
@@ -329,7 +330,7 @@ export default {
 }
 
 .filter-section {
-  padding-right: 55px;
+  /* padding-right: 55px; */
   display: flex;
   margin-bottom: 9px;
   margin-top: 20px;
@@ -358,6 +359,7 @@ export default {
 }
 
 .title {
+  margin-left: 50px;
   font-family: monospace;
   display: flex;
   font-size: 25px;
@@ -367,7 +369,7 @@ export default {
 }
 
 body {
-  background-color: rgba(237, 237, 122, 0.34);
+  background-color: rgba(237, 237, 122, 0.248);
 }
 
 #search-button {
@@ -386,6 +388,7 @@ body {
 }
 
 .controls {
+  margin-left: 50px;
   display: flex;
 }
 
@@ -401,9 +404,8 @@ body {
 
 .content {
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 45em;
+  margin-left: 15%;
+  max-width: 55em;
 }
 
 /* Custom, iPhone Retina */
@@ -468,7 +470,11 @@ body {
 }
 
 /* Small Devices, Tablets */
-@media only screen and (min-width: 768px) {
+@media only screen and (max-width: 768px) {
+
+  .controls,.title{
+    margin-left: 5px;
+  }
 
   body {
     padding-bottom: 100px;
@@ -480,21 +486,22 @@ body {
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (min-width: 992px) {
+@media only screen and (max-width: 1000px) {
 
-  .note-input {
-    height: 100px;
+  .controls,.title{
+    margin-left: 20px;
+  }
+
+  .content{
+    margin-left: 2% !important;
+    max-width: 50em;
   }
 }
 
 /* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
-  .content {
-    max-width: 55em;
-  }
-
-  .note-input {
-    height: 100px;
+@media only screen and (max-width: 1300px) {
+  .content{
+    margin-left: 3%;
   }
 }
 </style>
