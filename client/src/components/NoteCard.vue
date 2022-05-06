@@ -157,7 +157,8 @@ export default {
         float: left;
         margin-top: -10px;
         letter-spacing: -1.7px;
-        content: "-------------"
+        height: 10px;
+        content: "-------------";
       }</style>`;
     },
   },
@@ -228,7 +229,7 @@ export default {
   font-size: 12px;
   font-family: Helvetica;
   padding-left: 4px;
-  color: rgba(1, 2, 0, 0.156);
+  color: rgba(1, 2, 0, 0.201);
 }
 
 .card-content-text {
@@ -257,12 +258,12 @@ html .card-content {
 .card-container {
   border-radius: 0px 22px 22px 6px;
   min-height: 85px;
-  background-color: rgba(255, 255, 255, 0.724);
+  background-color: rgba(255, 255, 255, 0.546);
   padding: 16px;
   border: 2px solid #d9dce2;
   /* transition: background-color 4000ms ease-out; */
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
-    0 8px 8px rgba(186, 184, 184, 0.3);
+    0 10px 30px 8px rgba(186, 184, 184, 0.3);
 }
 
 /* Custom, iPhone Retina */
