@@ -294,6 +294,7 @@ export default {
 }
 
 .note-input {
+  color: rgba(0, 0, 0, 0.83);
   border: 2px solid #d9dce2;
   transition: background-color 4000ms ease-out;
   line-height: 1.3em;
@@ -303,11 +304,11 @@ export default {
   padding-left: 20px;
   background-color: rgba(255, 255, 255, 0.374);
   padding-top: 20px;
-  padding-right: 10px;
+  padding-right: 20px;
   height: 150px;
   font-size: 15px;
   border-radius: 15px 15px 2px 15px;
-  width: 93%;
+  width: 90%;
   max-width: 93%;
 }
 
@@ -442,6 +443,10 @@ body {
     margin-top: 40px;
   }
 
+  .search-button{
+    margin-right: 30px !important;
+  }
+
 
   .content {
     margin-right: 1% !important;
@@ -456,7 +461,8 @@ body {
 
   .note-input {
     font-family: Helvetica;
-    width: 85%;
+    width: 80%;
+    height: 90px;
   }
 
   #export-button {
@@ -473,7 +479,7 @@ body {
   }
 
   .note-input {
-    width: 90%;
+    width: 80%;
   }
 
   .topButtons {

@@ -258,7 +258,7 @@ html .card-content {
 }
 
 .card-container {
-  border-radius: 0px 22px 22px 6px;
+  border-radius: 0px 22px 22px 22px;
   min-height: 85px;
   background-color: rgba(255, 255, 255, 0.374);
   padding: 16px;
