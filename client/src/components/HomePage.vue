@@ -58,7 +58,7 @@
           />
         </div>
       </div>
-      <div class="filter-section">
+      <div class="filter-section" v-if="itemsFiltered.length > 0">
         <div class="filter-message">
           {{ !this.reversed ? "" : "" }}
         </div>
@@ -157,7 +157,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\n\n\nHotkeys:\n\nA: add note\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line on textarea"
+        "This app uses local storage. Clearing cache will remove all notes.\n\n\nHotkeys:\n\nA: add note\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line in textarea"
       );
     },
 
@@ -201,8 +201,12 @@ export default {
       let items = this.items.map(i => i[1]).join(splitter);
       let queryParams = `linknotes=${items}&joiner=${splitter}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParams}`;
-      await navigator.clipboard.writeText(url);
-      this.notify("Shareable collection link copied to clipboard.");
+      if(url.length > 2048) {
+        this.notify("Error: Collection too large. Must be under 2000 characters.");
+      } else {
+        await navigator.clipboard.writeText(url);
+        this.notify("Shareable collection link copied to clipboard.");
+      }
     },
 
     notify(message) {
@@ -277,7 +281,7 @@ export default {
 
 <style>
 .note-input {
-  height: 65px;
+  min-height: 65px;
   border: 2px solid #b1b4ba;
   padding-left: 15px;
   padding-top: 10px;
@@ -398,6 +402,7 @@ export default {
 
     /* Extra Small Devices, Phones */ 
 @media only screen and (max-width : 560px) {
+
   .content {
     border-right: 0px;
     padding-right: 0px;
@@ -431,14 +436,19 @@ export default {
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-
+@media only screen and (min-width : 992px) {
+  .note-input{
+    height: 100px;
+  }
 }
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
   .content{
     max-width: 55em;
+  }
+  .note-input{
+    height: 100px;
   }
 }
 </style>

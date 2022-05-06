@@ -85,8 +85,12 @@ export default {
     async generateLink() {
       let queryParam = `linknote=${this.content[1]}`;
       let url = `${location.protocol}//${location.host}${location.pathname}?${queryParam}`;
-      await navigator.clipboard.writeText(url);
-      this.notify("Shareable note link copied to clipboard.");
+      if(url.length > 2048) {
+        this.notify("Error: Note too large to share. Must be under 2000 characters.");
+      } else {
+        await navigator.clipboard.writeText(url);
+        this.notify("Shareable collection link copied to clipboard.");
+      }
     },
     async copyToClipboard() {
       await navigator.clipboard.writeText(this.content[1]);
@@ -112,10 +116,10 @@ export default {
       .note-card-root::before{
         color: #aaaca9;
         display: inline-block;
-        font-size: 37px;
+        font-size: 54px;
         float: right;
-        margin-right: -10px;
-        margin-top: -18px;
+        margin-right: -9px;
+        margin-top: -26px;
         content: "\\2022"
       }</style>`
     },
@@ -128,7 +132,7 @@ export default {
 .note-card{
   padding-right: 50px;
   border-radius: 0px;
-  border-right: 2px dotted #bec2bb;
+  border-right: 2px dotted #bec2bbad;
 }
 
 .card-header {
