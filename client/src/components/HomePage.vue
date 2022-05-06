@@ -415,8 +415,12 @@ body {
 }
 
 body {
-  padding-bottom: 5%;
+  padding-bottom: 1%;
 }
+
+  #search-button {
+    margin-left: 13px;
+  }
 
 .content {
   text-align: center;
@@ -438,7 +442,9 @@ body {
     margin-top: 40px;
   }
 
+
   .content {
+    margin-right: 1% !important;
     border-right: 0px;
     padding-right: 0px;
   }
@@ -488,6 +494,10 @@ body {
 /* Small Devices, Tablets */
 @media only screen and (max-width: 768px) {
 
+  .content {
+    margin-right: 1% !important;
+  }
+
   .controls,.title{
     margin-left: 5px;
   }
@@ -497,16 +507,12 @@ body {
   }
 
   #search-button {
-    margin-left: 10px;
+    margin-left: 15px;
   }
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width: 1000px) {
-
-  .controls,.title{
-    margin-left: 5px;
-  }
 
   .content{
     margin-left: 1% !important;
@@ -517,6 +523,7 @@ body {
 /* Large Devices, Wide Screens */
 @media only screen and (max-width: 1300px) {
   .content{
+    margin-right: 7%;
     margin-left: 3%;
   }
 }
