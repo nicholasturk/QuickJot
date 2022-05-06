@@ -155,8 +155,9 @@ export default {
         display: inline-block;
         font-size: 17px;
         float: left;
+        margin-left: 0.5px;
         margin-top: -10px;
-        letter-spacing: -1.7px;
+        letter-spacing: 4px;
         height: 10px;
         content: "-------------";
       }</style>`;
@@ -169,10 +170,11 @@ export default {
 .note-card {
   padding-left: 47px;
   border-radius: 0px;
+  margin-top: 4px;
 }
 
 .nc-bl{
-  border-left: 2px solid #bec2bb79;
+  border-left: 2px dashed #bec2bb79;
 }
 
 .card-header {
@@ -258,7 +260,7 @@ html .card-content {
 .card-container {
   border-radius: 0px 22px 22px 6px;
   min-height: 85px;
-  background-color: rgba(255, 255, 255, 0.546);
+  background-color: rgba(255, 255, 255, 0.374);
   padding: 16px;
   border: 2px solid #d9dce2;
   /* transition: background-color 4000ms ease-out; */

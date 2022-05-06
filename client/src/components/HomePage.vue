@@ -150,9 +150,9 @@ export default {
 
     inputText() {
       if (this.isSearching) {
-        return "Search for a note...";
+        return "search for a note...";
       } else {
-        return "Add a note...";
+        return "add a note...";
       }
     },
   },
@@ -288,6 +288,11 @@ export default {
 </script>
 
 <style>
+
+.note-input::placeholder{
+  color: rgba(1, 2, 0, 0.312);
+}
+
 .note-input {
   border: 2px solid #d9dce2;
   transition: background-color 4000ms ease-out;
@@ -296,7 +301,7 @@ export default {
     0 8px 8px rgba(186, 184, 184, 0.3);
   min-height: 65px;
   padding-left: 20px;
-  background-color: rgba(255, 255, 255, 0.546);
+  background-color: rgba(255, 255, 255, 0.374);
   padding-top: 20px;
   padding-right: 10px;
   height: 150px;
