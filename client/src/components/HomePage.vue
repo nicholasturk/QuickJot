@@ -494,12 +494,6 @@ body {
     margin-right: 30px !important;
   }
 
-  .content {
-    margin-right: 1% !important;
-    border-right: 0px;
-    padding-right: 0px;
-  }
-
   #export-button {
     font-size: 18px;
     margin-right: 5px;
@@ -582,6 +576,7 @@ body {
   .content {
     margin-left: 1% !important;
     max-width: 50em;
+    padding-right: 15px;
   }
 }
 
