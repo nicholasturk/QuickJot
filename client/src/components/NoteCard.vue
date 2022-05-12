@@ -2,11 +2,16 @@
   <div class="note-card-root">
     <div
       class="note-card"
-      :class="{ 'not-last-card': !isLast, 'nc-bl': !isLast }"
+      :class="{
+        'not-last-card': !isLastish,
+        'nc-bl': !isLastish && numCols === 1,
+        'note-card-lg': true,
+      }"
       :id="content[0]"
     >
-      <div v-if="!isLast" v-html="dateSinceCss"></div>
-      <div class="card-container">
+      <div v-if="!isLastish && numCols === 1" v-html="dateSinceCss"></div>
+
+      <div class="card-container item-background">
         <div class="card-header">
           <div class="created-date">
             {{ timeSince(content[0]) }}
@@ -52,7 +57,9 @@
         </div>
         <div class="card-content">
           <span class="starter">></span>
-          <div class="card-content-text">{{ content[1] }}</div>
+          <div class="card-content-text">
+            {{ content[1] }}
+          </div>
         </div>
       </div>
     </div>
@@ -61,17 +68,7 @@
 
 <script>
 export default {
-  props: ["content", "newlyAdded", "isLast"],
-
-  mounted() {
-    let orig = document.getElementsByClassName("card-container")[0];
-    if (this.newlyAdded) {
-      orig.classList.add("newly-added");
-      setTimeout(() => {
-        orig.classList.remove("newly-added");
-      }, 0);
-    }
-  },
+  props: ["content", "isLast", "isSecondLast", "isThirdLast", "numCols"],
 
   methods: {
     clone() {
@@ -148,8 +145,15 @@ export default {
   },
 
   computed: {
+    isLastish() {
+      let isLatish = this.isLast;
+      if (this.numCols >= 2) isLatish = isLatish || this.isSecondLast;
+      if (this.numCols >= 3) isLatish = isLatish || this.isThirdLast;
+      return isLatish;
+    },
+
     dateSinceCss() {
-      return `<style>      
+      return `<style>
       .note-card-root::before{
         color: #d9dce2;
         display: inline-block;
@@ -167,13 +171,15 @@ export default {
 </script>
 
 <style>
-.note-card {
+.note-card-lg {
   padding-left: 47px;
-  border-radius: 0px;
-  margin-top: 4px;
 }
 
-.nc-bl{
+.note-card {
+  border-radius: 0px;
+}
+
+.nc-bl {
   border-left: 2px dashed #bec2bb79;
 }
 
@@ -221,7 +227,7 @@ export default {
 }
 
 .not-last-card {
-  padding-bottom: 55px;
+  padding-bottom: 30px;
 }
 
 .created-date {
@@ -253,17 +259,20 @@ html .card-content {
   white-space: pre-wrap;
 }
 
-.newly-added {
-  background-color: #bec2bb;
+.item-background {
+  background-color: rgba(255, 255, 255, 0.374) !important;
+}
+
+.newly-added-bg {
+  background-color: rgba(19, 19, 19, 0.374);
 }
 
 .card-container {
   border-radius: 0px 22px 22px 22px;
   min-height: 85px;
-  background-color: rgba(255, 255, 255, 0.374);
   padding: 16px;
   border: 2px solid #d9dce2;
-  /* transition: background-color 4000ms ease-out; */
+  transition: background-color 2000ms ease-out;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 10px 30px 8px rgba(186, 184, 184, 0.3);
 }

@@ -6,9 +6,12 @@ import KeyPress from "vue-keypress";
 import vueAlerts from "vue-alerts";
 import VTooltip from "v-tooltip";
 
+require("code-prettify/styles/sunburst.css");
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { faBomb } from "@fortawesome/free-solid-svg-icons";
 import { faClipboardQuestion } from "@fortawesome/free-solid-svg-icons";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
@@ -30,6 +33,7 @@ library.add(faClone);
 library.add(faClipboard);
 library.add(faTrashCan);
 library.add(faLink);
+library.add(faGrip);
 
 Vue.use(VueRouter);
 Vue.use(VTooltip);

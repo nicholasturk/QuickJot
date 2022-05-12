@@ -1,6 +1,6 @@
 <template>
   <div id="home-page">
-    <alert>hi</alert>
+    <alert></alert>
     <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
     <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
@@ -15,7 +15,9 @@
             class="note-input"
             v-model="inputBody"
             :placeholder="inputText"
-            @keydown="e => e.keyCode == 13 && !e.shiftKey ? e.preventDefault() : ''"
+            @keydown="
+              (e) => (e.keyCode == 13 && !e.shiftKey ? e.preventDefault() : '')
+            "
             @keyup.enter="submitNote"
           />
         </div>
@@ -66,6 +68,15 @@
           {{ !this.reversed ? "" : "" }}
         </div>
         <font-awesome-icon
+          v-tooltip="`Change layout`"
+          class="topButton"
+          @click="() => addToCols()"
+          size="2x"
+          id="layout-button"
+          icon="grip"
+          color="#b1b4ba"
+        />
+        <font-awesome-icon
           v-tooltip="`Sort`"
           class="topButton"
           @click="() => (this.reversed = !this.reversed)"
@@ -76,16 +87,22 @@
         />
       </div>
 
-      <div class="cards">
-        <note-card
-          v-for="(item, idx) in itemsFiltered"
-          :key="(item.id, idx)"
-          :content="item"
-          :isLast="idx == itemsFiltered.length - 1 ? true : false"
-          :newlyAdded="linknote && idx === 0"
-          @deleteItem="deleteItem"
-          @addItem="addItem"
-        ></note-card>
+      <div class="ui grid">
+        <div :class="`${colsNumToStr} column row`">
+          <note-card
+            class="column"
+            v-for="(item, idx) in itemsFiltered"
+            :key="(item.id, idx)"
+            :content="item"
+            :isLast="idx == itemsFiltered.length - 1 ? true : false"
+            :isSecondLast="idx == itemsFiltered.length - 2 ? true : false"
+            :isThirdLast="idx == itemsFiltered.length - 3 ? true : false"
+            :numCols="numCols"
+            :lastAdded="lastAdded === item[0]"
+            @deleteItem="deleteItem"
+            @addItem="addItem"
+          ></note-card>
+        </div>
       </div>
     </div>
   </div>
@@ -103,7 +120,9 @@ export default {
 
   data() {
     return {
+      lastAdded: -1,
       inputBody: "",
+      numCols: 1,
       items: [],
       shouldShake: false,
       isSearching: false,
@@ -117,7 +136,6 @@ export default {
     document.getElementById("note-input").focus();
     this.getItems();
     if ("linknote" in this.$route.query) {
-      console.log(this.$route.query.linknote);
       this.linknote = true;
       this.addItem(this.$route.query.linknote);
       this.$router.push(this.$route.path);
@@ -130,6 +148,15 @@ export default {
   },
 
   computed: {
+    colsNumToStr() {
+      let colsMap = {
+        1: "one",
+        2: "two",
+        3: "three",
+      };
+      return colsMap[this.numCols];
+    },
+
     searchBody() {
       if (this.isSearching) {
         return this.inputBody;
@@ -158,6 +185,14 @@ export default {
   },
 
   methods: {
+    addToCols() {
+      if (this.numCols === 3) {
+        this.numCols = 1;
+      } else {
+        this.numCols += 1;
+      }
+    },
+
     displayInfo() {
       this.$alert.present(
         "Info",
@@ -189,11 +224,12 @@ export default {
         if (content[-1] === "\n") {
           t = content.slice(0, -1);
         }
-        this.items.push([key, t]);
+        this.items.push([key, t, true]);
       } else {
-        this.items.unshift([key, t]);
+        this.items.unshift([key, t, true]);
       }
       localStorage.setItem(key, t);
+      this.lastAdded = key;
     },
 
     async exportCollection() {
@@ -209,7 +245,7 @@ export default {
         );
       } else {
         await navigator.clipboard.writeText(url);
-        if(items.length === 0) {
+        if (items.length === 0) {
           this.notify("Copied, but you might want to add some notes first...");
         } else {
           this.notify("Shareable collection link copied to clipboard.");
@@ -237,7 +273,6 @@ export default {
       if (this.isSearching) {
         return;
       }
-      this.linknote = false;
       this.addItem(this.inputBody);
       this.inputBody = "";
     },
@@ -288,8 +323,7 @@ export default {
 </script>
 
 <style>
-
-.note-input::placeholder{
+.note-input::placeholder {
   color: rgba(1, 2, 0, 0.312);
 }
 
@@ -376,7 +410,7 @@ export default {
   font-family: monospace;
   display: flex;
   font-size: 22px;
-  margin-top: 40px;
+  margin-top: 15px;
   margin-bottom: 30px;
   padding-left: 15px;
 }
@@ -396,12 +430,21 @@ body {
   margin-right: 5px;
 }
 
+#layout-button {
+  margin-top: 0px;
+  margin-right: 10px;
+}
+
 #sort-button:hover {
   transform: scale(1.15);
 }
 
+#layout-button:hover {
+  transform: scale(1.15);
+}
+
 .controls {
-  margin-left: 50px;
+  margin-left: 25px;
   display: flex;
 }
 
@@ -416,12 +459,12 @@ body {
 }
 
 body {
-  padding-bottom: 1%;
+  padding-bottom: 10%;
 }
 
-  #search-button {
-    margin-left: 13px;
-  }
+#search-button {
+  margin-left: 13px;
+}
 
 .content {
   text-align: center;
@@ -431,8 +474,12 @@ body {
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 360px) {
-    .search-button {
+  .search-button {
     margin-left: 20px;
+  }
+
+  .card-buttons {
+    display: block;
   }
 }
 
@@ -443,10 +490,9 @@ body {
     margin-top: 40px;
   }
 
-  .search-button{
+  .search-button {
     margin-right: 30px !important;
   }
-
 
   .content {
     margin-right: 1% !important;
@@ -499,16 +545,30 @@ body {
 
 /* Small Devices, Tablets */
 @media only screen and (max-width: 768px) {
+  .card-container {
+    padding-top: 0px;
+  }
+
+  .card-header {
+    display: block;
+    text-align: center;
+  }
+
+  .card-buttons {
+    margin-left: 0px;
+    justify-content: center;
+  }
 
   .content {
     margin-right: 1% !important;
   }
 
-  .controls,.title{
+  .controls,
+  .title {
     margin-left: 5px;
   }
 
-  .note-card{
+  .note-card {
     padding-left: 15px;
   }
 
@@ -519,8 +579,7 @@ body {
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width: 1000px) {
-
-  .content{
+  .content {
     margin-left: 1% !important;
     max-width: 50em;
   }
@@ -528,7 +587,7 @@ body {
 
 /* Large Devices, Wide Screens */
 @media only screen and (max-width: 1300px) {
-  .content{
+  .content {
     margin-right: 7%;
     margin-left: 3%;
   }
