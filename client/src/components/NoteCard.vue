@@ -172,7 +172,7 @@ export default {
 
 <style>
 .note-card-lg {
-  padding-left: 47px;
+  padding-left: 2%;
 }
 
 .note-card {
