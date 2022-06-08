@@ -487,11 +487,11 @@ body {
 @media only screen and (max-width: 560px) {
   .filter-section {
     padding-right: 20px;
-    margin-top: 40px;
+    margin-top: 0px;
   }
 
   .search-button {
-    margin-right: 30px !important;
+    margin-left: -30px !important;
   }
 
   #export-button {
@@ -502,7 +502,6 @@ body {
   .note-input {
     font-family: Helvetica;
     width: 80%;
-    height: 90px;
   }
 
   #export-button {

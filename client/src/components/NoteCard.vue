@@ -73,6 +73,7 @@ export default {
   methods: {
     clone() {
       this.$emit("addItem", this.content[1]);
+      this.notify("Note cloned.");
     },
 
     timeSince(date) {

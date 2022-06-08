@@ -6,8 +6,6 @@ import KeyPress from "vue-keypress";
 import vueAlerts from "vue-alerts";
 import VTooltip from "v-tooltip";
 
-require("code-prettify/styles/sunburst.css");
-
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
