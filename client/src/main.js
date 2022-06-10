@@ -18,10 +18,14 @@ import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { faClone } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faFileExport } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import routes from "./routes";
 
 library.add(faUserSecret);
+library.add(faCaretDown);
+library.add(faCaretRight);
 library.add(faClipboardQuestion);
 library.add(faFileExport);
 library.add(faMagnifyingGlass);

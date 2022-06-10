@@ -5,7 +5,7 @@
     <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
-      <div class="title">quickjot.</div>
+      <div class="title">quickjot</div>
       <div class="controls">
         <div class="input-section">
           <textarea
@@ -347,7 +347,8 @@ export default {
 }
 
 .input-section {
-  width: 68%;
+  width: 70%;
+  margin-left: -30px;
 }
 
 .rotate-left {
@@ -410,7 +411,7 @@ export default {
   font-family: monospace;
   display: flex;
   font-size: 22px;
-  margin-top: 15px;
+  margin-top: 60px;
   margin-bottom: 30px;
   padding-left: 15px;
 }
@@ -488,6 +489,10 @@ body {
   .filter-section {
     padding-right: 20px;
     margin-top: 0px;
+  }
+
+  .title {
+    margin-top: 10px;
   }
 
   .search-button {

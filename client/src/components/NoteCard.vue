@@ -13,6 +13,15 @@
 
       <div class="card-container item-background">
         <div class="card-header">
+          <div class="card-button">
+            <font-awesome-icon
+              class="show-arrow collapse"
+              @click="collapse"
+              :icon="!showContent ? 'caret-right' : 'caret-down'"
+              size="xl"
+              color="#b1b4ba"
+            />
+          </div>
           <div class="created-date">
             {{ timeSince(content[0]) }}
           </div>
@@ -55,7 +64,7 @@
             </div>
           </div>
         </div>
-        <div class="card-content">
+        <div class="card-content" v-if="showContent">
           <span class="starter">></span>
           <div class="card-content-text">
             {{ content[1] }}
@@ -70,7 +79,17 @@
 export default {
   props: ["content", "isLast", "isSecondLast", "isThirdLast", "numCols"],
 
+  data() {
+    return {
+      showContent: true,
+    };
+  },
+
   methods: {
+    collapse() {
+      this.showContent = !this.showContent;
+    },
+
     clone() {
       this.$emit("addItem", this.content[1]);
       this.notify("Note cloned.");
@@ -185,8 +204,7 @@ export default {
 }
 
 .card-header {
-  border-bottom: 1px solid #bec2bb42;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding-bottom: 3px;
   display: flex;
 }
@@ -203,6 +221,7 @@ export default {
 }
 
 .card-button {
+  cursor: pointer;
   outline: none;
 }
 
@@ -219,7 +238,6 @@ export default {
   padding-bottom: 3px;
   display: flex;
   margin-left: auto;
-  cursor: pointer;
   font-size: 16px;
 }
 
@@ -233,8 +251,6 @@ export default {
 
 .created-date {
   margin-right: auto;
-  padding-top: 5px;
-  margin-top: 5px;
   font-size: 12px;
   font-family: Helvetica;
   padding-left: 4px;
@@ -242,11 +258,14 @@ export default {
 }
 
 .card-content-text {
-  color: rgba(0, 0, 0, 0.83);
+  font-weight: 900;
+  color: rgba(52, 51, 51, 0.83);
   font-family: Helvetica;
 }
 
 html .card-content {
+  border-top: 1px solid #bec2bb42;
+
   line-height: 23px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
@@ -268,10 +287,14 @@ html .card-content {
   background-color: rgba(19, 19, 19, 0.374);
 }
 
+.collapse {
+  min-width: 15px;
+  margin-bottom: -5 px;
+}
+
 .card-container {
   border-radius: 0px 22px 22px 22px;
-  min-height: 85px;
-  padding: 16px;
+  padding: 16px 16px 0px 16px;
   border: 2px solid #d9dce2;
   transition: background-color 2000ms ease-out;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
