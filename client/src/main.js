@@ -20,9 +20,14 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faFileExport } from "@fortawesome/free-solid-svg-icons";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesUp } from "@fortawesome/free-solid-svg-icons";
+import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import routes from "./routes";
 
+library.add(faAnglesDown);
+library.add(faAnglesUp);
+library.add(faAnglesDown);
 library.add(faUserSecret);
 library.add(faCaretDown);
 library.add(faCaretRight);

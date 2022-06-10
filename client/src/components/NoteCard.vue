@@ -10,7 +10,6 @@
       :id="content[0]"
     >
       <div v-if="!isLastish && numCols === 1" v-html="dateSinceCss"></div>
-
       <div class="card-container item-background">
         <div class="card-header">
           <div class="card-button">
@@ -22,8 +21,13 @@
               color="#b1b4ba"
             />
           </div>
-          <div class="created-date">
-            {{ timeSince(content[0]) }}
+          <div class="card-info">
+            <span class="card-header-text">
+              {{ timeSince(content[0]) + (!showContent ? "," : "") }}
+            </span>
+            <span class="preview card-content-text" v-if="!showContent">
+              {{ preview }}
+            </span>
           </div>
           <div class="card-buttons">
             <div @click="copyToClipboard()">
@@ -66,9 +70,7 @@
         </div>
         <div class="card-content" v-if="showContent">
           <span class="starter">></span>
-          <div class="card-content-text">
-            {{ content[1] }}
-          </div>
+          <div class="card-content-text">{{ content[1] }}</div>
         </div>
       </div>
     </div>
@@ -172,6 +174,10 @@ export default {
       return isLatish;
     },
 
+    preview() {
+      return " " + this.content[1].substring(0, 20) + "...";
+    },
+
     dateSinceCss() {
       return `<style>
       .note-card-root::before{
@@ -249,17 +255,30 @@ export default {
   padding-bottom: 30px;
 }
 
-.created-date {
+.preview {
   margin-right: auto;
+}
+
+.preview.card-header-text {
   font-size: 12px;
   font-family: Helvetica;
-  padding-left: 4px;
+  color: rgba(43, 43, 42, 0.831);
+}
+
+.card-header-text {
+  font-size: 12px;
+  font-family: Helvetica;
   color: rgba(1, 2, 0, 0.201);
 }
 
+.card-info {
+  margin-right: auto;
+  padding-left: 4px;
+}
+
 .card-content-text {
-  font-weight: 900;
-  color: rgba(52, 51, 51, 0.83);
+  font-weight: 600;
+  color: rgb(66, 65, 65);
   font-family: Helvetica;
 }
 

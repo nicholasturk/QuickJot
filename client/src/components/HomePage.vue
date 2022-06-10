@@ -68,6 +68,15 @@
           {{ !this.reversed ? "" : "" }}
         </div>
         <font-awesome-icon
+          v-tooltip="`Collapse All`"
+          class="topButton"
+          @click="() => addToCols()"
+          size="sm"
+          id="layout-button"
+          icon="angles-up"
+          color="#b1b4ba"
+        />
+        <font-awesome-icon
           v-tooltip="`Change layout`"
           class="topButton"
           @click="() => addToCols()"
@@ -407,7 +416,7 @@ export default {
 }
 
 .title {
-  margin-left: 50px;
+  margin-left: 10px;
   font-family: monospace;
   display: flex;
   font-size: 22px;
