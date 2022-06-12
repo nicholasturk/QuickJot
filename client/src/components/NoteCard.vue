@@ -298,10 +298,10 @@ html .card-content {
   line-height: 23px;
   display: flex;
   margin-top: 5px;
-  padding-right: 5px;
-  padding-bottom: 0px;
-  padding-left: 8px;
-  padding-top: 10px;
+  padding-right: 12px;
+  padding-bottom: 5px;
+  padding-left: 11px;
+  padding-top: 7px;
   word-break: break-all;
   text-align: left;
   overflow: hidden;

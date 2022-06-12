@@ -451,7 +451,7 @@ body {
 }
 
 .controls {
-  margin-left: 25px;
+  margin-left: 15px;
   display: flex;
 }
 
@@ -493,6 +493,14 @@ body {
     margin-top: 0px;
   }
 
+  .topButtons {
+    font-size: 10px;
+  }
+
+  .topButton {
+    margin-right: 5px;
+  }
+
   .title {
     margin-top: 10px;
   }
@@ -502,18 +510,13 @@ body {
   }
 
   #export-button {
-    font-size: 18px;
-    margin-right: 5px;
+    font-size: 17px;
+    margin-left: 0px;
   }
 
   .note-input {
     font-family: Helvetica;
     width: 80%;
-  }
-
-  #export-button {
-    font-size: 25px;
-    margin-left: 0px;
   }
 
   .card-button {
