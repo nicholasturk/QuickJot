@@ -252,7 +252,7 @@ export default {
 }
 
 .not-last-card {
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 
 .preview {
@@ -278,18 +278,18 @@ export default {
 
 .card-content-text {
   font-weight: 600;
-  color: rgb(66, 65, 65);
+  letter-spacing: 0.3px;
+  color: rgba(66, 65, 65, 0.896);
   font-family: Helvetica;
 }
 
 html .card-content {
   border-top: 1px solid #bec2bb42;
-
   line-height: 23px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   margin-top: 5px;
-  padding: 25px;
+  padding-bottom: 10px;
   padding-left: 5px;
   padding-top: 10px;
   word-break: break-all;

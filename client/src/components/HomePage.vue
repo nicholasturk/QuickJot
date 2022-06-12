@@ -68,12 +68,17 @@
           {{ !this.reversed ? "" : "" }}
         </div>
         <font-awesome-icon
-          v-tooltip="`Collapse All`"
-          class="topButton"
+          v-tooltip="`Hide all`"
+          class="topButton top-collapse"
           @click="() => addToCols()"
-          size="sm"
-          id="layout-button"
           icon="angles-up"
+          color="#b1b4ba"
+        />
+        <font-awesome-icon
+          v-tooltip="`Collapse All`"
+          class="topButton top-collapse"
+          @click="() => addToCols()"
+          icon="angles-down"
           color="#b1b4ba"
         />
         <font-awesome-icon
@@ -386,10 +391,9 @@ export default {
 }
 
 .filter-section {
-  /* padding-right: 55px; */
   display: flex;
   margin-bottom: 9px;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .filter-message {
@@ -400,10 +404,13 @@ export default {
   margin-right: 9px;
 }
 
+.top-collapse {
+  padding-top: 5px;
+  font-size: 18px;
+}
+
 .topButton {
-  font-size: 25px;
   margin-right: 10px;
-  margin-top: 14px;
 }
 
 .topButtons {
@@ -436,8 +443,9 @@ body {
 }
 
 #sort-button {
-  margin-top: 0px;
-  margin-right: 5px;
+  font-size: 25px;
+  padding-top: 2px;
+  margin-right: 8px;
 }
 
 #layout-button {
@@ -449,7 +457,7 @@ body {
   transform: scale(1.15);
 }
 
-#layout-button:hover {
+.topButton:hover {
   transform: scale(1.15);
 }
 
@@ -463,7 +471,7 @@ body {
 }
 
 #export-button {
-  font-size: 22px;
+  font-size: 23px;
   margin-left: 5px;
   margin-bottom: 1px;
 }
