@@ -20,18 +20,18 @@
             "
             @keyup.enter="submitNote"
           />
-        </div>
-        <div class="search-button">
-          <font-awesome-icon
-            v-tooltip="'Search'"
-            class="topButton"
-            id="search-button"
-            @click="search()"
-            size="2x"
-            icon="magnifying-glass"
-            rotation="90"
-            color="#b1b4ba"
-          />
+          <div class="search-button">
+            <font-awesome-icon
+              v-tooltip="'Search'"
+              class="topButton"
+              id="search-button"
+              @click="search()"
+              size="2x"
+              icon="magnifying-glass"
+              rotation="90"
+              color="#b1b4ba"
+            />
+          </div>
         </div>
         <div class="topButtons">
           <font-awesome-icon
@@ -68,16 +68,16 @@
           {{ !this.reversed ? "" : "" }}
         </div>
         <font-awesome-icon
-          v-tooltip="`Hide all`"
+          v-tooltip="`Hide collection`"
           class="topButton top-collapse"
-          @click="() => addToCols()"
+          @click="() => collapseAll(false)"
           icon="angles-up"
           color="#b1b4ba"
         />
         <font-awesome-icon
-          v-tooltip="`Collapse All`"
+          v-tooltip="`Collapse collection`"
           class="topButton top-collapse"
-          @click="() => addToCols()"
+          @click="() => collapseAll(true)"
           icon="angles-down"
           color="#b1b4ba"
         />
@@ -191,14 +191,18 @@ export default {
 
     inputText() {
       if (this.isSearching) {
-        return "search for a note...";
+        return "Search for a note...";
       } else {
-        return "add a note...";
+        return "Add a note";
       }
     },
   },
 
   methods: {
+    collapseAll(show) {
+      this.$emit("hideOrShowAll", show);
+    },
+
     addToCols() {
       if (this.numCols === 3) {
         this.numCols = 1;
@@ -348,21 +352,20 @@ export default {
   line-height: 1.3em;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);
-  min-height: 65px;
+  min-height: 80px;
   padding-left: 20px;
   background-color: rgba(255, 255, 255, 0.374);
   padding-top: 20px;
   padding-right: 20px;
-  height: 150px;
   font-size: 15px;
+  width: 100%;
   border-radius: 15px 15px 2px 15px;
-  width: 90%;
   max-width: 93%;
 }
 
 .input-section {
   width: 70%;
-  margin-left: -30px;
+  display: flex;
 }
 
 .rotate-left {
@@ -393,7 +396,6 @@ export default {
 .filter-section {
   display: flex;
   margin-bottom: 9px;
-  margin-top: 5px;
 }
 
 .filter-message {
@@ -427,8 +429,8 @@ export default {
   font-family: monospace;
   display: flex;
   font-size: 22px;
-  margin-top: 60px;
-  margin-bottom: 30px;
+  margin-top: 45px;
+  margin-bottom: 20px;
   padding-left: 15px;
 }
 

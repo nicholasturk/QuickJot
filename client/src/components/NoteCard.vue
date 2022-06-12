@@ -33,7 +33,7 @@
             <div @click="copyToClipboard()">
               <font-awesome-icon
                 class="card-button"
-                v-tooltip="'Copy content'"
+                v-tooltip="'Copy to clipboard '"
                 icon="clipboard"
                 size="lg"
                 color="#b1b4ba"
@@ -83,11 +83,19 @@ export default {
 
   data() {
     return {
-      showContent: true,
+      showContent: false,
     };
   },
 
+  created() {
+    this.$parent.$on("hideOrShowAll", this.hideOrShow);
+  },
+
   methods: {
+    hideOrShow(show) {
+      this.showContent = show;
+    },
+
     collapse() {
       this.showContent = !this.showContent;
     },
@@ -210,8 +218,6 @@ export default {
 }
 
 .card-header {
-  margin-bottom: 5px;
-  padding-bottom: 3px;
   display: flex;
 }
 
@@ -289,7 +295,7 @@ html .card-content {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   margin-top: 5px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   padding-left: 5px;
   padding-top: 10px;
   word-break: break-all;
@@ -313,7 +319,7 @@ html .card-content {
 
 .card-container {
   border-radius: 0px 22px 22px 22px;
-  padding: 16px 16px 0px 16px;
+  padding: 12px 15px 10px 15px;
   border: 2px solid #d9dce2;
   transition: background-color 2000ms ease-out;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
