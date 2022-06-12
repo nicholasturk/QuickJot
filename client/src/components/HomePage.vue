@@ -360,7 +360,7 @@ export default {
 }
 
 .input-section {
-  width: 70%;
+  width: 75%;
   display: flex;
 }
 
@@ -412,7 +412,6 @@ export default {
 }
 
 .topButtons {
-  margin-top: -8px;
   margin-left: auto;
 }
 
