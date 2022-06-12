@@ -11,7 +11,7 @@
     >
       <div v-if="!isLastish && numCols === 1" v-html="dateSinceCss"></div>
       <div class="card-container item-background">
-        <div class="card-header">
+        <div class="card-header" :class="{ 'border-bottom': showContent }">
           <div class="card-button">
             <font-awesome-icon
               class="show-arrow collapse"
@@ -33,7 +33,7 @@
             <div @click="copyToClipboard()">
               <font-awesome-icon
                 class="card-button"
-                v-tooltip="'Copy to clipboard '"
+                v-tooltip="'Copy to clipboard'"
                 icon="clipboard"
                 size="lg"
                 color="#b1b4ba"
@@ -83,7 +83,7 @@ export default {
 
   data() {
     return {
-      showContent: false,
+      showContent: true,
     };
   },
 
@@ -217,15 +217,11 @@ export default {
   border-left: 2px dashed #bec2bb79;
 }
 
-.card-header {
-  display: flex;
-}
-
 .starter {
   user-select: none;
   color: #b1b4ba;
   margin-right: 6px;
-  font-size: 17px;
+  font-size: 12px;
 }
 
 .topButton {
@@ -239,6 +235,7 @@ export default {
 
 .card-header {
   display: flex;
+  margin-left: 10px;
 }
 
 .card-button {
@@ -261,6 +258,10 @@ export default {
   padding-bottom: 10px;
 }
 
+.border-bottom {
+  border-bottom: 1px solid #bec2bb42;
+}
+
 .preview {
   margin-right: auto;
 }
@@ -272,31 +273,34 @@ export default {
 }
 
 .card-header-text {
+  user-select: none;
   font-size: 12px;
   font-family: Helvetica;
   color: rgba(1, 2, 0, 0.201);
 }
 
 .card-info {
+  word-break: break-all;
   margin-right: auto;
+  padding-right: 10px;
   padding-left: 4px;
 }
 
 .card-content-text {
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.3px;
-  color: rgba(66, 65, 65, 0.896);
-  font-family: Helvetica;
+  font-size: 16px;
+  color: rgb(3, 3, 3);
+  font-family: Arial;
 }
 
 html .card-content {
-  border-top: 1px solid #bec2bb42;
   line-height: 23px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   margin-top: 5px;
+  padding-right: 5px;
   padding-bottom: 0px;
-  padding-left: 5px;
+  padding-left: 8px;
   padding-top: 10px;
   word-break: break-all;
   text-align: left;
@@ -318,8 +322,10 @@ html .card-content {
 }
 
 .card-container {
-  border-radius: 0px 22px 22px 22px;
-  padding: 12px 15px 10px 15px;
+  border-radius: 0px 12px 12px 12px;
+  padding-top: 12px;
+  padding-right: 10px;
+  padding-bottom: 10px;
   border: 2px solid #d9dce2;
   transition: background-color 2000ms ease-out;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),

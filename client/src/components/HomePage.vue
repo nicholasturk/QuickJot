@@ -28,7 +28,6 @@
               @click="search()"
               size="2x"
               icon="magnifying-glass"
-              rotation="90"
               color="#b1b4ba"
             />
           </div>
@@ -36,7 +35,7 @@
         <div class="topButtons">
           <font-awesome-icon
             v-tooltip="'Help'"
-            class="topButton"
+            class="topButton grow-on-hover"
             size="2x"
             icon="clipboard-question"
             @click="displayInfo()"
@@ -45,7 +44,7 @@
           />
           <font-awesome-icon
             v-tooltip="'Copy shareable collection'"
-            class="topButton"
+            class="topButton grow-on-hover"
             size="2x"
             icon="file-export"
             @click="exportCollection()"
@@ -54,7 +53,7 @@
           />
           <font-awesome-icon
             v-tooltip="'Delete collection'"
-            class="topButton"
+            class="topButton grow-on-hover"
             @click="clear()"
             :class="{ 'fa-shake': shouldShake }"
             size="2x"
@@ -69,21 +68,21 @@
         </div>
         <font-awesome-icon
           v-tooltip="`Hide collection`"
-          class="topButton top-collapse"
+          class="topButton top-collapse grow-on-hover"
           @click="() => collapseAll(false)"
           icon="angles-up"
           color="#b1b4ba"
         />
         <font-awesome-icon
-          v-tooltip="`Collapse collection`"
-          class="topButton top-collapse"
+          v-tooltip="`Show collection`"
+          class="topButton top-collapse grow-on-hover"
           @click="() => collapseAll(true)"
           icon="angles-down"
           color="#b1b4ba"
         />
         <font-awesome-icon
           v-tooltip="`Change layout`"
-          class="topButton"
+          class="topButton grow-on-hover"
           @click="() => addToCols()"
           size="2x"
           id="layout-button"
@@ -92,7 +91,7 @@
         />
         <font-awesome-icon
           v-tooltip="`Sort`"
-          class="topButton"
+          class="topButton grow-on-hover"
           @click="() => (this.reversed = !this.reversed)"
           size="2x"
           id="sort-button"
@@ -115,7 +114,8 @@
             :lastAdded="lastAdded === item[0]"
             @deleteItem="deleteItem"
             @addItem="addItem"
-          ></note-card>
+          >
+          </note-card>
         </div>
       </div>
     </div>
@@ -147,7 +147,6 @@ export default {
   },
 
   mounted() {
-    document.getElementById("note-input").focus();
     this.getItems();
     if ("linknote" in this.$route.query) {
       this.linknote = true;
@@ -312,16 +311,9 @@ export default {
     },
 
     search() {
+      document.getElementById("note-input").focus();
       let icon = document.getElementById("search-button");
-      icon.classList.remove("rotate-right");
-      icon.classList.remove("rotate-left");
       this.isSearching = !this.isSearching;
-      if (this.isSearching) {
-        document.getElementById("note-input").focus();
-        icon.classList.add("rotate-left");
-      } else {
-        icon.classList.add("rotate-right");
-      }
     },
 
     getItems() {
@@ -361,6 +353,10 @@ export default {
   width: 100%;
   border-radius: 15px 15px 2px 15px;
   max-width: 93%;
+}
+
+.grow-on-hover:hover {
+  transform: scale(1.15);
 }
 
 .input-section {
@@ -455,21 +451,9 @@ body {
   margin-right: 10px;
 }
 
-#sort-button:hover {
-  transform: scale(1.15);
-}
-
-.topButton:hover {
-  transform: scale(1.15);
-}
-
 .controls {
   margin-left: 25px;
   display: flex;
-}
-
-.topButtons .topButton:hover {
-  transform: scale(1.1);
 }
 
 #export-button {
@@ -515,7 +499,7 @@ body {
   }
 
   .search-button {
-    margin-left: -30px !important;
+    margin-right: auto !important;
   }
 
   #export-button {
@@ -531,28 +515,6 @@ body {
   #export-button {
     font-size: 25px;
     margin-left: 0px;
-  }
-
-  .search-button {
-    margin-right: 20px;
-  }
-
-  .input-section {
-    width: 90%;
-  }
-
-  .note-input {
-    width: 80%;
-  }
-
-  .topButtons {
-    margin-top: -17px;
-  }
-
-  .topButton {
-    display: block;
-    margin-right: 2px;
-    font-size: 25px;
   }
 
   .card-button {
