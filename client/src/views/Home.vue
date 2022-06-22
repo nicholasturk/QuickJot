@@ -1,6 +1,5 @@
 <template>
   <div id="home-page">
-    <alert></alert>
     <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
     <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
@@ -12,7 +11,7 @@
             :style="{ resize: this.isSearching ? 'none' : '' }"
             type="text"
             id="note-input"
-            class="note-input"
+            class="my-input"
             v-model="inputBody"
             :placeholder="inputText"
             @keydown="
@@ -20,17 +19,6 @@
             "
             @keyup.enter="submitNote"
           />
-          <div class="search-button">
-            <font-awesome-icon
-              v-tooltip="'Search'"
-              class="topButton"
-              id="search-button"
-              @click="search()"
-              size="2x"
-              icon="magnifying-glass"
-              color="#b1b4ba"
-            />
-          </div>
         </div>
         <div class="topButtons">
           <font-awesome-icon
@@ -63,41 +51,55 @@
         </div>
       </div>
       <div class="filter-section" v-if="itemsFiltered.length > 0">
-        <div class="filter-message">
-          {{ !this.reversed ? "" : "" }}
+        <div id="search-input-wrapper">
+          <input
+            type="text"
+            id="search-input"
+            class="my-input"
+            placeholder="Filter by key"
+          />
+          <font-awesome-icon
+            class="topButton"
+            id="search-button"
+            size="2x"
+            icon="magnifying-glass"
+            color="#b1b4ba"
+          />
         </div>
-        <font-awesome-icon
-          v-tooltip="`Hide collection`"
-          class="topButton top-collapse grow-on-hover"
-          @click="() => collapseAll(false)"
-          icon="angles-up"
-          color="#b1b4ba"
-        />
-        <font-awesome-icon
-          v-tooltip="`Show collection`"
-          class="topButton top-collapse grow-on-hover"
-          @click="() => collapseAll(true)"
-          icon="angles-down"
-          color="#b1b4ba"
-        />
-        <font-awesome-icon
-          v-tooltip="`Change layout`"
-          class="topButton grow-on-hover"
-          @click="() => addToCols()"
-          size="2x"
-          id="layout-button"
-          icon="grip"
-          color="#b1b4ba"
-        />
-        <font-awesome-icon
-          v-tooltip="`Sort`"
-          class="topButton grow-on-hover"
-          @click="() => (this.reversed = !this.reversed)"
-          size="2x"
-          id="sort-button"
-          icon="sort"
-          color="#b1b4ba"
-        />
+        <div class="top-right-controls">
+          <font-awesome-icon
+            v-tooltip="`Hide collection`"
+            class="topButton top-collapse grow-on-hover"
+            @click="() => collapseAll(false)"
+            icon="angles-up"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            v-tooltip="`Show collection`"
+            class="topButton top-collapse grow-on-hover"
+            @click="() => collapseAll(true)"
+            icon="angles-down"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            v-tooltip="`Change layout`"
+            class="topButton grow-on-hover"
+            @click="() => addToCols()"
+            size="2x"
+            id="layout-button"
+            icon="grip"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            v-tooltip="`Sort`"
+            class="topButton grow-on-hover"
+            @click="() => (this.reversed = !this.reversed)"
+            size="2x"
+            id="sort-button"
+            icon="sort"
+            color="#b1b4ba"
+          />
+        </div>
       </div>
 
       <div class="ui grid">
@@ -123,7 +125,7 @@
 </template>
 
 <script>
-import NoteCard from "./NoteCard";
+import NoteCard from "../components/NoteCard";
 
 export default {
   name: "HomePage",
@@ -233,19 +235,18 @@ export default {
 
     addItem(content) {
       let key = Date.now();
-      let t = content;
       if (localStorage.getItem(key) !== null) {
         key += 1;
       }
       if (this.reversed) {
         if (content[-1] === "\n") {
-          t = content.slice(0, -1);
+          content = content.slice(0, -1);
         }
-        this.items.push([key, t, true]);
+        this.items.push([key, content]);
       } else {
-        this.items.unshift([key, t, true]);
+        this.items.unshift([key, content]);
       }
-      localStorage.setItem(key, t);
+      localStorage.setItem(key, content);
       this.lastAdded = key;
     },
 
@@ -312,7 +313,6 @@ export default {
 
     search() {
       document.getElementById("note-input").focus();
-      let icon = document.getElementById("search-button");
       this.isSearching = !this.isSearching;
     },
 
@@ -333,17 +333,21 @@ export default {
 </script>
 
 <style>
-.note-input::placeholder {
+.my-input::placeholder {
   color: rgba(1, 2, 0, 0.312);
 }
 
-.note-input {
+.my-input {
   color: rgba(0, 0, 0, 0.83);
   border: 2px solid #d9dce2;
   transition: background-color 4000ms ease-out;
   line-height: 1.3em;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);
+  background-color: rgba(255, 255, 255, 0.374);
+}
+
+#note-input {
   min-height: 80px;
   padding-left: 20px;
   background-color: rgba(255, 255, 255, 0.374);
@@ -375,9 +379,13 @@ export default {
   transition-duration: 300ms;
 }
 
-.note-input:focus {
+.my-input:focus {
   border: 2px solid rgba(146, 137, 137, 0.661);
   outline: none;
+}
+
+#search-button {
+  font-size: 10px;
 }
 
 .dndrop-draggable-wrapper {
@@ -390,16 +398,10 @@ export default {
 }
 
 .filter-section {
+  margin-left: 15px;
   display: flex;
+  margin-top: 20px;
   margin-bottom: 9px;
-}
-
-.filter-message {
-  margin-left: auto;
-  font-size: 11px;
-  padding-top: 5px;
-  color: #bec2bb;
-  margin-right: 9px;
 }
 
 .top-collapse {
@@ -415,8 +417,20 @@ export default {
   margin-left: auto;
 }
 
+#search-input {
+  padding: 10px;
+  width: 300px;
+  border-radius: 12px 0px 0px 0px;
+  margin-top: 10px;
+  height: 30px;
+}
+
 .topButton:hover {
   cursor: pointer;
+}
+
+.top-right-controls {
+  margin-left: auto;
 }
 
 .title {
@@ -431,12 +445,6 @@ export default {
 
 body {
   background-color: rgba(237, 237, 122, 0.248);
-}
-
-#search-button {
-  margin-left: 5px;
-  margin-top: 5px;
-  font-size: 30px;
 }
 
 #sort-button {
@@ -465,10 +473,6 @@ body {
   padding-bottom: 10%;
 }
 
-#search-button {
-  margin-left: 13px;
-}
-
 .content {
   text-align: center;
   margin-left: 15%;
@@ -477,10 +481,6 @@ body {
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 360px) {
-  .search-button {
-    margin-left: 20px;
-  }
-
   .card-buttons {
     display: block;
   }
@@ -505,16 +505,12 @@ body {
     margin-top: 10px;
   }
 
-  .search-button {
-    margin-right: auto !important;
-  }
-
   #export-button {
     font-size: 17px;
     margin-left: 0px;
   }
 
-  .note-input {
+  #note-input {
     font-family: Helvetica;
     width: 80%;
   }
@@ -551,10 +547,6 @@ body {
 
   .note-card {
     padding-left: 15px;
-  }
-
-  #search-button {
-    margin-left: 15px;
   }
 }
 

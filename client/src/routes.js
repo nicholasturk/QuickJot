@@ -1,3 +1,3 @@
-import HomePage from "./components/HomePage";
+import Home from "./views/Home";
 
-export default [{ path: "/", component: HomePage }];
+export default [{ path: "/", component: Home }];
