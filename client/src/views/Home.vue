@@ -1,14 +1,12 @@
 <template>
   <div id="home-page">
     <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
-    <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
     <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
       <div class="title">quickjot</div>
       <div class="controls">
         <div class="input-section">
           <textarea
-            :style="{ resize: this.isSearching ? 'none' : '' }"
             type="text"
             id="note-input"
             class="my-input"
@@ -52,18 +50,18 @@
       </div>
       <div class="filter-section" v-if="itemsFiltered.length > 0">
         <div id="search-input-wrapper">
-          <input
-            type="text"
-            id="search-input"
-            class="my-input"
-            placeholder="Filter by key"
-          />
           <font-awesome-icon
             class="topButton"
             id="search-button"
             size="2x"
             icon="magnifying-glass"
             color="#b1b4ba"
+          />
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Filter by keyword..."
+            v-model="searchBody"
           />
         </div>
         <div class="top-right-controls">
@@ -191,11 +189,7 @@ export default {
     },
 
     inputText() {
-      if (this.isSearching) {
-        return "Search for a note...";
-      } else {
-        return "Add a note";
-      }
+      return "Add a note...";
     },
   },
 
@@ -304,15 +298,8 @@ export default {
       }
     },
 
-    deactivateSearch(e) {
-      if (this.isSearching) {
-        this.search();
-      }
-      document.getElementById("note-input").blur();
-    },
-
     search() {
-      document.getElementById("note-input").focus();
+      document.getElementById("search-input").focus();
       this.isSearching = !this.isSearching;
     },
 
@@ -384,8 +371,28 @@ export default {
   outline: none;
 }
 
+#search-input-wrapper {
+  border-bottom: 1px dotted transparent;
+  border-image: linear-gradient(90deg, #bec2bb90, transparent);
+  border-image-slice: 1;
+  height: 27px;
+  display: flex;
+  width: 70%;
+}
+
+#search-input:focus {
+  border: none;
+  outline: none;
+}
+
 #search-button {
-  font-size: 10px;
+  font-size: 13px;
+  margin-right: 4px;
+  margin-top: 8px;
+}
+
+#search-button:hover {
+  cursor: default;
 }
 
 .dndrop-draggable-wrapper {
@@ -398,15 +405,19 @@ export default {
 }
 
 .filter-section {
-  margin-left: 15px;
+  margin-left: 23px;
   display: flex;
   margin-top: 20px;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 .top-collapse {
-  padding-top: 5px;
-  font-size: 18px;
+  font-size: 20px;
+  padding-bottom: 1.6px;
+}
+
+.top-right-controls .topButton {
+  margin-top: -3px;
 }
 
 .topButton {
@@ -417,11 +428,15 @@ export default {
   margin-left: auto;
 }
 
+#search-input::placeholder {
+  color: rgba(1, 2, 0, 0.364);
+}
+
 #search-input {
-  padding: 10px;
-  width: 300px;
-  border-radius: 12px 0px 0px 0px;
-  margin-top: 10px;
+  width: 100%;
+  background-color: rgba(255, 0, 0, 0);
+  border: 0px;
+  font-size: 13px;
   height: 30px;
 }
 
@@ -448,14 +463,14 @@ body {
 }
 
 #sort-button {
-  font-size: 25px;
-  padding-top: 2px;
   margin-right: 8px;
+  font-size: 23px;
+  padding-bottom: 1px;
 }
 
 #layout-button {
-  margin-top: 0px;
-  margin-right: 10px;
+  font-size: 26px;
+  /* margin-top: 0px; */
 }
 
 .controls {
@@ -490,7 +505,7 @@ body {
 @media only screen and (max-width: 560px) {
   .filter-section {
     padding-right: 20px;
-    margin-top: 0px;
+    margin-top: 25px;
   }
 
   .topButtons {
