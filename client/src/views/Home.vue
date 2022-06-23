@@ -1,18 +1,13 @@
 <template>
   <div id="home-page">
-    <alert></alert>
-    <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
-    <key-press key-event="keyup" :key-code="27" @success="deactivateSearch()" />
-    <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
-      <div class="title">quickjot</div>
+      <!-- <div class="title">quickjot</div> -->
       <div class="controls">
         <div class="input-section">
           <textarea
-            :style="{ resize: this.isSearching ? 'none' : '' }"
             type="text"
             id="note-input"
-            class="note-input"
+            class="my-input"
             v-model="inputBody"
             :placeholder="inputText"
             @keydown="
@@ -20,17 +15,6 @@
             "
             @keyup.enter="submitNote"
           />
-          <div class="search-button">
-            <font-awesome-icon
-              v-tooltip="'Search'"
-              class="topButton"
-              id="search-button"
-              @click="search()"
-              size="2x"
-              icon="magnifying-glass"
-              color="#b1b4ba"
-            />
-          </div>
         </div>
         <div class="topButtons">
           <font-awesome-icon
@@ -62,42 +46,58 @@
           />
         </div>
       </div>
-      <div class="filter-section" v-if="itemsFiltered.length > 0">
-        <div class="filter-message">
-          {{ !this.reversed ? "" : "" }}
+      <div class="filter-section" v-if="items.length > 0">
+        <div id="search-input-wrapper">
+          <font-awesome-icon
+            class="topButton"
+            :class="{ clickable: !!searchBody }"
+            @click="searchBody = ''"
+            id="search-button"
+            size="2x"
+            :icon="!searchBody ? 'magnifying-glass' : 'xmark'"
+            color="#b1b4ba"
+          />
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Filter by keyword"
+            v-model="searchBody"
+          />
         </div>
-        <font-awesome-icon
-          v-tooltip="`Hide collection`"
-          class="topButton top-collapse grow-on-hover"
-          @click="() => collapseAll(false)"
-          icon="angles-up"
-          color="#b1b4ba"
-        />
-        <font-awesome-icon
-          v-tooltip="`Show collection`"
-          class="topButton top-collapse grow-on-hover"
-          @click="() => collapseAll(true)"
-          icon="angles-down"
-          color="#b1b4ba"
-        />
-        <font-awesome-icon
-          v-tooltip="`Change layout`"
-          class="topButton grow-on-hover"
-          @click="() => addToCols()"
-          size="2x"
-          id="layout-button"
-          icon="grip"
-          color="#b1b4ba"
-        />
-        <font-awesome-icon
-          v-tooltip="`Sort`"
-          class="topButton grow-on-hover"
-          @click="() => (this.reversed = !this.reversed)"
-          size="2x"
-          id="sort-button"
-          icon="sort"
-          color="#b1b4ba"
-        />
+        <div class="top-right-controls">
+          <font-awesome-icon
+            v-tooltip="`Hide collection`"
+            class="topButton top-collapse grow-on-hover"
+            @click="() => collapseAll(false)"
+            icon="angles-up"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            v-tooltip="`Show collection`"
+            class="topButton top-collapse grow-on-hover"
+            @click="() => collapseAll(true)"
+            icon="angles-down"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            v-tooltip="`Change layout`"
+            class="topButton grow-on-hover"
+            @click="() => addToCols()"
+            size="2x"
+            id="layout-button"
+            icon="grip"
+            color="#b1b4ba"
+          />
+          <font-awesome-icon
+            v-tooltip="`Sort`"
+            class="topButton grow-on-hover"
+            @click="() => (this.reversed = !this.reversed)"
+            size="2x"
+            id="sort-button"
+            icon="sort"
+            color="#b1b4ba"
+          />
+        </div>
       </div>
 
       <div class="ui grid">
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import NoteCard from "./NoteCard";
+import NoteCard from "../components/NoteCard";
 
 export default {
   name: "HomePage",
@@ -136,10 +136,10 @@ export default {
     return {
       lastAdded: -1,
       inputBody: "",
+      searchBody: "",
       numCols: 1,
       items: [],
       shouldShake: false,
-      isSearching: false,
       linknote: false,
       linknotes: false,
       reversed: false,
@@ -170,14 +170,6 @@ export default {
       return colsMap[this.numCols];
     },
 
-    searchBody() {
-      if (this.isSearching) {
-        return this.inputBody;
-      } else {
-        return "";
-      }
-    },
-
     itemsFiltered() {
       let ret = this.items.filter((e) => e[1].match(this.searchBody));
       if (this.reversed) {
@@ -189,11 +181,7 @@ export default {
     },
 
     inputText() {
-      if (this.isSearching) {
-        return "Search for a note...";
-      } else {
-        return "Add a note";
-      }
+      return "Add a note";
     },
   },
 
@@ -213,7 +201,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\n\nHotkeys:\n\nA: add note (enter to submit)\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line in textarea"
+        "This app uses local storage. Clearing your browsers local storage will remove all notes.\n\nShift + enter for new line on a note."
       );
     },
 
@@ -233,19 +221,18 @@ export default {
 
     addItem(content) {
       let key = Date.now();
-      let t = content;
       if (localStorage.getItem(key) !== null) {
         key += 1;
       }
       if (this.reversed) {
         if (content[-1] === "\n") {
-          t = content.slice(0, -1);
+          content = content.slice(0, -1);
         }
-        this.items.push([key, t, true]);
+        this.items.push([key, content]);
       } else {
-        this.items.unshift([key, t, true]);
+        this.items.unshift([key, content]);
       }
-      localStorage.setItem(key, t);
+      localStorage.setItem(key, content);
       this.lastAdded = key;
     },
 
@@ -303,16 +290,8 @@ export default {
       }
     },
 
-    deactivateSearch(e) {
-      if (this.isSearching) {
-        this.search();
-      }
-      document.getElementById("note-input").blur();
-    },
-
     search() {
-      document.getElementById("note-input").focus();
-      let icon = document.getElementById("search-button");
+      document.getElementById("search-input").focus();
       this.isSearching = !this.isSearching;
     },
 
@@ -333,17 +312,21 @@ export default {
 </script>
 
 <style>
-.note-input::placeholder {
+.my-input::placeholder {
   color: rgba(1, 2, 0, 0.312);
 }
 
-.note-input {
+.my-input {
   color: rgba(0, 0, 0, 0.83);
   border: 2px solid #d9dce2;
   transition: background-color 4000ms ease-out;
   line-height: 1.3em;
   box-shadow: 0 0px 0px rgba(255, 254, 254, 0.3),
     0 8px 8px rgba(186, 184, 184, 0.3);
+  background-color: rgba(255, 255, 255, 0.374);
+}
+
+#note-input {
   min-height: 80px;
   padding-left: 20px;
   background-color: rgba(255, 255, 255, 0.374);
@@ -360,7 +343,7 @@ export default {
 }
 
 .input-section {
-  width: 75%;
+  width: 80%;
   display: flex;
 }
 
@@ -375,9 +358,34 @@ export default {
   transition-duration: 300ms;
 }
 
-.note-input:focus {
+.my-input:focus {
   border: 2px solid rgba(146, 137, 137, 0.661);
   outline: none;
+}
+
+#search-input-wrapper {
+  border-bottom: 1px dotted transparent;
+  border-image: linear-gradient(90deg, #bec2bb90, transparent);
+  border-image-slice: 1;
+  height: 27px;
+  display: flex;
+  width: 70%;
+}
+
+#search-input:focus {
+  border: none;
+  outline: none;
+}
+
+#search-button {
+  width: 10px;
+  font-size: 13px;
+  margin-right: 4px;
+  margin-top: 9.2px;
+}
+
+#search-button:hover {
+  cursor: default;
 }
 
 .dndrop-draggable-wrapper {
@@ -390,21 +398,19 @@ export default {
 }
 
 .filter-section {
+  margin-left: 23px;
   display: flex;
-  margin-bottom: 9px;
-}
-
-.filter-message {
-  margin-left: auto;
-  font-size: 11px;
-  padding-top: 5px;
-  color: #bec2bb;
-  margin-right: 9px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .top-collapse {
-  padding-top: 5px;
-  font-size: 18px;
+  font-size: 20px;
+  padding-bottom: 1.6px;
+}
+
+.top-right-controls .topButton {
+  margin-top: -3px;
 }
 
 .topButton {
@@ -415,39 +421,49 @@ export default {
   margin-left: auto;
 }
 
+#search-input::placeholder {
+  color: rgba(1, 2, 0, 0.312);
+}
+
+#search-input {
+  width: 100%;
+  background-color: rgba(255, 0, 0, 0);
+  border: 0px;
+  font-size: 13px;
+  height: 30px;
+}
+
 .topButton:hover {
   cursor: pointer;
 }
 
+.top-right-controls {
+  margin-left: auto;
+}
+
 .title {
-  margin-left: 10px;
+  position: absolute;
+  user-select: none;
   font-family: monospace;
   display: flex;
-  font-size: 22px;
-  margin-top: 45px;
-  margin-bottom: 20px;
-  padding-left: 15px;
+  font-size: 15px;
+  top: 10px;
+  left: 10px;
 }
 
 body {
   background-color: rgba(237, 237, 122, 0.248);
 }
 
-#search-button {
-  margin-left: 5px;
-  margin-top: 5px;
-  font-size: 30px;
-}
-
 #sort-button {
-  font-size: 25px;
-  padding-top: 2px;
   margin-right: 8px;
+  font-size: 23px;
+  padding-bottom: 1px;
 }
 
 #layout-button {
-  margin-top: 0px;
-  margin-right: 10px;
+  font-size: 26px;
+  /* margin-top: 0px; */
 }
 
 .controls {
@@ -456,20 +472,21 @@ body {
 }
 
 #export-button {
-  font-size: 23px;
+  font-size: 24px;
   margin-left: 5px;
   margin-bottom: 1px;
+}
+
+#search-button.clickable:hover {
+  cursor: pointer;
 }
 
 body {
   padding-bottom: 10%;
 }
 
-#search-button {
-  margin-left: 13px;
-}
-
 .content {
+  margin-top: 50px;
   text-align: center;
   margin-left: 15%;
   max-width: 55em;
@@ -477,10 +494,6 @@ body {
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 360px) {
-  .search-button {
-    margin-left: 20px;
-  }
-
   .card-buttons {
     display: block;
   }
@@ -490,7 +503,7 @@ body {
 @media only screen and (max-width: 560px) {
   .filter-section {
     padding-right: 20px;
-    margin-top: 0px;
+    margin-top: 25px;
   }
 
   .topButtons {
@@ -505,16 +518,12 @@ body {
     margin-top: 10px;
   }
 
-  .search-button {
-    margin-right: auto !important;
-  }
-
   #export-button {
     font-size: 17px;
     margin-left: 0px;
   }
 
-  .note-input {
+  #note-input {
     font-family: Helvetica;
     width: 80%;
   }
@@ -551,10 +560,6 @@ body {
 
   .note-card {
     padding-left: 15px;
-  }
-
-  #search-button {
-    margin-left: 15px;
   }
 }
 

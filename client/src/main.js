@@ -11,6 +11,7 @@ import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { faBomb } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faClipboardQuestion } from "@fortawesome/free-solid-svg-icons";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -41,6 +42,7 @@ library.add(faClipboard);
 library.add(faTrashCan);
 library.add(faLink);
 library.add(faGrip);
+library.add(faXmark);
 
 Vue.use(VueRouter);
 Vue.use(VTooltip);
