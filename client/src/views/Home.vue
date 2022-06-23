@@ -50,6 +50,8 @@
         <div id="search-input-wrapper">
           <font-awesome-icon
             class="topButton"
+            :class="{ clickable: !!searchBody }"
+            @click="searchBody = ''"
             id="search-button"
             size="2x"
             :icon="!searchBody ? 'magnifying-glass' : 'xmark'"
@@ -179,7 +181,7 @@ export default {
     },
 
     inputText() {
-      return "Add a note...";
+      return "Add a note";
     },
   },
 
@@ -420,7 +422,7 @@ export default {
 }
 
 #search-input::placeholder {
-  color: rgba(1, 2, 0, 0.364);
+  color: rgba(1, 2, 0, 0.312);
 }
 
 #search-input {
@@ -470,9 +472,13 @@ body {
 }
 
 #export-button {
-  font-size: 23px;
+  font-size: 24px;
   margin-left: 5px;
   margin-bottom: 1px;
+}
+
+#search-button.clickable:hover {
+  cursor: pointer;
 }
 
 body {
@@ -480,7 +486,7 @@ body {
 }
 
 .content {
-  margin-top: 30px;
+  margin-top: 50px;
   text-align: center;
   margin-left: 15%;
   max-width: 55em;
