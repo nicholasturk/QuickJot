@@ -1,9 +1,7 @@
 <template>
   <div id="home-page">
-    <key-press key-event="keyup" :key-code="83" @success="activateSearch()" />
-    <key-press key-event="keyup" :key-code="65" @success="addNote()" />
     <div class="content">
-      <div class="title">quickjot</div>
+      <!-- <div class="title">quickjot</div> -->
       <div class="controls">
         <div class="input-section">
           <textarea
@@ -48,19 +46,19 @@
           />
         </div>
       </div>
-      <div class="filter-section" v-if="itemsFiltered.length > 0">
+      <div class="filter-section" v-if="items.length > 0">
         <div id="search-input-wrapper">
           <font-awesome-icon
             class="topButton"
             id="search-button"
             size="2x"
-            icon="magnifying-glass"
+            :icon="!searchBody ? 'magnifying-glass' : 'xmark'"
             color="#b1b4ba"
           />
           <input
             type="search"
             id="search-input"
-            placeholder="Filter by keyword..."
+            placeholder="Filter by keyword"
             v-model="searchBody"
           />
         </div>
@@ -136,10 +134,10 @@ export default {
     return {
       lastAdded: -1,
       inputBody: "",
+      searchBody: "",
       numCols: 1,
       items: [],
       shouldShake: false,
-      isSearching: false,
       linknote: false,
       linknotes: false,
       reversed: false,
@@ -168,14 +166,6 @@ export default {
         3: "three",
       };
       return colsMap[this.numCols];
-    },
-
-    searchBody() {
-      if (this.isSearching) {
-        return this.inputBody;
-      } else {
-        return "";
-      }
     },
 
     itemsFiltered() {
@@ -209,7 +199,7 @@ export default {
     displayInfo() {
       this.$alert.present(
         "Info",
-        "This app uses local storage. Clearing cache will remove all notes.\n\n\nHotkeys:\n\nA: add note (enter to submit)\n\nS: search for note\n\nesc: unfocus textarea/stop searching or exit this modal\n\nshift + enter: for new line in textarea"
+        "This app uses local storage. Clearing your browsers local storage will remove all notes.\n\nShift + enter for new line on a note."
       );
     },
 
@@ -351,7 +341,7 @@ export default {
 }
 
 .input-section {
-  width: 75%;
+  width: 80%;
   display: flex;
 }
 
@@ -386,9 +376,10 @@ export default {
 }
 
 #search-button {
+  width: 10px;
   font-size: 13px;
   margin-right: 4px;
-  margin-top: 8px;
+  margin-top: 9.2px;
 }
 
 #search-button:hover {
@@ -449,13 +440,13 @@ export default {
 }
 
 .title {
-  margin-left: 10px;
+  position: absolute;
+  user-select: none;
   font-family: monospace;
   display: flex;
-  font-size: 22px;
-  margin-top: 45px;
-  margin-bottom: 20px;
-  padding-left: 15px;
+  font-size: 15px;
+  top: 10px;
+  left: 10px;
 }
 
 body {
@@ -489,6 +480,7 @@ body {
 }
 
 .content {
+  margin-top: 30px;
   text-align: center;
   margin-left: 15%;
   max-width: 55em;
