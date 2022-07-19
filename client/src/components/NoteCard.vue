@@ -29,43 +29,57 @@
               {{ preview }}
             </span>
           </div>
-          <div class="card-buttons">
-            <div @click="copyToClipboard()">
+          <div class="card-buttons-wrapper" @mouseleave="unhoverToolbar()">
+            <div>
               <font-awesome-icon
-                class="card-button"
-                v-tooltip="'Copy to clipboard'"
-                icon="clipboard"
+                class="toolbox"
+                icon="ellipsis"
+                v-if="showHammer && !isMobile()"
+                @mouseover="hoverToolbar()"
                 size="lg"
                 color="#b1b4ba"
               />
             </div>
-            <div @click="generateLink()">
-              <font-awesome-icon
-                class="card-button"
-                v-tooltip="'Copy shareable link'"
-                icon="link"
-                size="lg"
-                color="#b1b4ba"
-              />
-            </div>
-            <div @click="clone()">
-              <font-awesome-icon
-                class="card-button"
-                v-tooltip="'Clone'"
-                icon="clone"
-                size="lg"
-                color="#b1b4ba"
-              />
-            </div>
-            <div @click="$emit('deleteItem', content[0])">
-              <font-awesome-icon
-                class="card-button"
-                v-tooltip="'Delete note'"
-                icon="trash-can"
-                size="lg"
-                color="#b1b4ba"
-              />
-            </div>
+            <transition name="slide-fade">
+              <div class="card-buttons" v-if="hoveringOnToolBar || isMobile()">
+                <div @click="$emit('deleteItem', content[0])">
+                  <font-awesome-icon
+                    class="card-button"
+                    v-tooltip="'Delete note'"
+                    icon="trash-can"
+                    size="lg"
+                    color="#b1b4ba"
+                  />
+                </div>
+                <div @click="generateLink()">
+                  <font-awesome-icon
+                    class="card-button"
+                    v-tooltip="'Copy shareable link'"
+                    icon="link"
+                    size="lg"
+                    color="#b1b4ba"
+                  />
+                </div>
+                <div @click="clone()">
+                  <font-awesome-icon
+                    class="card-button"
+                    v-tooltip="'Clone'"
+                    icon="clone"
+                    size="lg"
+                    color="#b1b4ba"
+                  />
+                </div>
+                <div @click="copyToClipboard()">
+                  <font-awesome-icon
+                    class="card-button"
+                    v-tooltip="'Copy to clipboard'"
+                    icon="clipboard"
+                    size="lg"
+                    color="#b1b4ba"
+                  />
+                </div>
+              </div>
+            </transition>
           </div>
         </div>
         <div class="card-content" v-if="showContent">
@@ -83,7 +97,9 @@ export default {
 
   data() {
     return {
+      hoveringOnToolBar: false,
       showContent: true,
+      showHammer: true,
     };
   },
 
@@ -92,6 +108,30 @@ export default {
   },
 
   methods: {
+    isMobile() {
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    hoverToolbar() {
+      this.hoveringOnToolBar = true;
+      this.showHammer = false;
+    },
+
+    unhoverToolbar() {
+      this.hoveringOnToolBar = false;
+      setTimeout(() => {
+        this.showHammer = true;
+      }, 200);
+    },
+
     hideOrShow(show) {
       this.showContent = show;
     },
@@ -205,6 +245,18 @@ export default {
 </script>
 
 <style>
+.slide-fade-enter-active {
+  transition: all 0.15s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.15s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
 .note-card-lg {
   padding-left: 2%;
 }
@@ -272,6 +324,10 @@ export default {
   color: rgba(43, 43, 42, 0.831);
 }
 
+.card-buttons-wrapper {
+  height: 20px;
+}
+
 .card-header-text {
   user-select: none;
   font-size: 12px;
@@ -310,6 +366,11 @@ html .card-content {
 
 .item-background {
   background-color: rgba(255, 255, 255, 0.374) !important;
+}
+
+.toolbox {
+  font-size: 18px;
+  margin-right: 8px;
 }
 
 .newly-added-bg {

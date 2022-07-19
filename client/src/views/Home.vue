@@ -452,6 +452,7 @@ export default {
 }
 
 body {
+  margin-bottom: 200px;
   background-color: rgba(237, 237, 122, 0.248);
 }
 
@@ -490,6 +491,7 @@ body {
   text-align: center;
   margin-left: 15%;
   max-width: 55em;
+  padding-bottom: 150px;
 }
 
 /* Custom, iPhone Retina */

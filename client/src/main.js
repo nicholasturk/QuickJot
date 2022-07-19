@@ -7,7 +7,7 @@ import vueAlerts from "vue-alerts";
 import VTooltip from "v-tooltip";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH, faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { faBomb } from "@fortawesome/free-solid-svg-icons";
@@ -23,6 +23,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { faAnglesUp } from "@fortawesome/free-solid-svg-icons";
 import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import routes from "./routes";
 
@@ -42,6 +43,7 @@ library.add(faClipboard);
 library.add(faTrashCan);
 library.add(faLink);
 library.add(faGrip);
+library.add(faEllipsis);
 library.add(faXmark);
 
 Vue.use(VueRouter);
