@@ -429,7 +429,7 @@ export default {
   width: 100%;
   background-color: rgba(255, 0, 0, 0);
   border: 0px;
-  font-size: 13px;
+  font-size: 15px;
   height: 30px;
 }
 

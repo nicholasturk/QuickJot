@@ -83,7 +83,6 @@
           </div>
         </div>
         <div class="card-content" v-if="showContent">
-          <span class="starter">></span>
           <div class="card-content-text">{{ content[1] }}</div>
         </div>
       </div>
@@ -129,7 +128,7 @@ export default {
       this.hoveringOnToolBar = false;
       setTimeout(() => {
         this.showHammer = true;
-      }, 200);
+      }, 270);
     },
 
     hideOrShow(show) {
@@ -246,10 +245,10 @@ export default {
 
 <style>
 .slide-fade-enter-active {
-  transition: all 0.15s ease;
+  transition: all 0.25s ease;
 }
 .slide-fade-leave-active {
-  transition: all 0.15s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
@@ -356,7 +355,7 @@ html .card-content {
   margin-top: 5px;
   padding-right: 12px;
   padding-bottom: 5px;
-  padding-left: 11px;
+  padding-left: 16px;
   padding-top: 7px;
   word-break: break-all;
   text-align: left;
